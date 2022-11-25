@@ -1,0 +1,18 @@
+.container{
+	margin:auto;
+	width: 20rem;
+}
+
+#conversations{
+	width: 100%;
+	height: 12rem;
+	overflow-y: auto;
+	word-wrap: break-word;
+	background-color: gray;
+}
+
+#text{
+	box-sizing: border-box;
+	width: 100%;
+	resize: none;
+}
