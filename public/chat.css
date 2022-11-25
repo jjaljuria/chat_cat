@@ -2,6 +2,8 @@
 	width: 100%;
 	height: 12rem;
 	overflow-y: auto;
+	word-break: break-all;
+	background-color: #f4f4f4;
 }
 
 #text{

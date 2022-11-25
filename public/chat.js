@@ -12,8 +12,8 @@ send.addEventListener('click', ()=>{
 socket.on('chat', ({userId, text})=>{
 	let username = 'you';
 	if(userId !== socket.id){
-		username = String(userId).slice(0,4);
+		username = String(userId).slice(0,3);
 	}
 
-	conversations.innerHTML = conversations.innerHTML + `<p><b>${username}</b>: ${text}</p>`;
+	conversations.innerHTML = conversations.innerHTML + `<span class="d-block mb-1"><b>${username}</b>: ${text}</span>`;
 })
