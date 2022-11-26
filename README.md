@@ -14,7 +14,7 @@ Instalar dependencias
 ```
 npm install
 ```
-
+ingrese a `http://localhost:3000` en su navegador
 ## Comandos
 ```
 /* ejecuta el servidor */ 
