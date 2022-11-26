@@ -4,7 +4,6 @@ Un simple chat web
 
 ## Instalacion
 
----
 Ejecute el siguientes comando:
 
 Clonar el repositorio
