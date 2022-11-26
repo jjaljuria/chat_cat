@@ -16,4 +16,6 @@ socket.on('chat', ({userId, text})=>{
 	}
 
 	conversations.innerHTML = conversations.innerHTML + `<span class="d-block mb-1"><b>${username}</b>: ${text}</span>`;
+
+	conversations.scrollTop = conversations.scrollHeight;
 })
