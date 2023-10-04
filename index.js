@@ -2,6 +2,13 @@ const express = require('express');
 const app = express();
 const socketIo = require('socket.io');
 const path = require('path');
+const { engine } = require('express-handlebars')
+
+app.engine('handlebars', engine({
+	defaultLayout: false
+}))
+app.set('view engine', 'handlebars')
+app.set('views', './views')
 
 
 app.set('PORT', process.env.PORT || 3000);
@@ -12,7 +19,7 @@ app.use('/css', express.static(path.join(__dirname, '/node_modules/bootstrap/dis
 
 
 app.get('/', (req, res)	=>{
-	res.render('index.html');
+	res.render('index.handlebars');
 });
 
 const server = app.listen(app.get('PORT'), () =>{
@@ -22,7 +29,7 @@ const server = app.listen(app.get('PORT'), () =>{
 const io = socketIo(server)
 io.on('connection', (socket)=>{
 	console.log('Contected in ' + socket.id);
-	socket.on('chat', (text)=>{
-		io.sockets.emit('chat', text);
+	socket.on('chat', (data)=>{
+		io.sockets.emit('chat', data);
 	})
 })
