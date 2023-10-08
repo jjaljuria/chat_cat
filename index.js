@@ -4,9 +4,7 @@ const socketIo = require('socket.io');
 const path = require('path');
 const { engine } = require('express-handlebars')
 
-app.engine('handlebars', engine({
-	defaultLayout: false
-}))
+app.engine('handlebars', engine())
 app.set('view engine', 'handlebars')
 app.set('views', './views')
 
@@ -17,10 +15,14 @@ app.set('PORT', process.env.PORT || 3000);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/css', express.static(path.join(__dirname, '/node_modules/bootstrap/dist/css')));
 
-
 app.get('/', (req, res)	=>{
 	res.render('index.handlebars');
 });
+
+app.get('/login', (req, res) =>{
+	res.render('login.handlebars');
+});
+
 
 const server = app.listen(app.get('PORT'), () =>{
 	console.log('Server start in PORT ' + app.get('PORT'));
