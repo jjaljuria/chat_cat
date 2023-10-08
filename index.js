@@ -4,7 +4,9 @@ const socketIo = require('socket.io');
 const path = require('path');
 const { engine } = require('express-handlebars')
 
-app.engine('handlebars', engine())
+app.engine('handlebars', engine({
+	defaultLayout: false
+}))
 app.set('view engine', 'handlebars')
 app.set('views', './views')
 
