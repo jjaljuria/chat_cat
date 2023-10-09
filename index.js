@@ -33,6 +33,7 @@ app.get('/login', (req, res) =>{
 
 app.post('/login', (req, res) =>{
 	const {nickname} = req.body;
+	console.log(req.body);
 
 	if(!nickname) return res.status(400).send('error en el nickname')
 	
