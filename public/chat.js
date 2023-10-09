@@ -5,14 +5,6 @@ const text = document.getElementById('text');
 const conversations = document.getElementById('conversations');
 const nickname = document.getElementById('nickname')
 
-window.addEventListener('DOMContentLoaded', ()=>{
-	const token = JSON.parse(sessionStorage.getItem('chat_token'))
-
-	if(!token) location.assign('/login')
-
-	
-})
-
 send.addEventListener('click', ()=>{
 	
 	socket.emit('chat', {

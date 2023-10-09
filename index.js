@@ -3,7 +3,7 @@ const app = express();
 const socketIo = require('socket.io');
 const path = require('path');
 const { engine } = require('express-handlebars');
-const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 
 app.engine('handlebars', engine({
 	defaultLayout: false
@@ -22,9 +22,14 @@ app.use('/css', express.static(path.join(__dirname, '/node_modules/bootstrap/dis
 /** MIDDLEWARES */
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
+app.use(cookieParser('secret'))
 
 app.get('/', (req, res)	=>{
-	res.render('index.handlebars');
+	const nickname = req.cookies['chat_nickname'];
+	
+	if(!nickname) return res.redirect('/login')
+
+	res.render('index.handlebars', {nickname});
 });
 
 app.get('/login', (req, res) =>{
@@ -33,13 +38,15 @@ app.get('/login', (req, res) =>{
 
 app.post('/login', (req, res) =>{
 	const {nickname} = req.body;
-	console.log(req.body);
+	
 
 	if(!nickname) return res.status(400).send('error en el nickname')
 	
-	const token = jwt.sign({nickname}, 'secret')
 
-	return res.status(200).json(token)
+	return res.cookie('chat_nickname', String(nickname), {
+		maxAge: 1000 * 60 * 60 * 24 * 5,
+		sameSite: 'strict'
+	}).redirect('/')
 })
 
 
