@@ -3,20 +3,21 @@ const socket = io();
 const send = document.getElementById('send');
 const text = document.getElementById('text');
 const conversations = document.getElementById('conversations');
-const nickname = document.getElementById('nickname')
+const nicknameFile = document.getElementById('nickname')
 
 send.addEventListener('click', ()=>{
-	
+	console.log(nicknameFile.value);
+
 	socket.emit('chat', {
 		userId: socket.id, 
 		text: text.value,
-		nickname: nickname.value
+		nickname: nicknameFile.value
 	});
 	text.value = '';
 })
 
 socket.on('chat', ({userId, text, nickname})=>{
-	let username = 'you';console.log({nickname})
+	let username = 'you';
 	if(userId !== socket.id){
 		username = nickname
 	}
