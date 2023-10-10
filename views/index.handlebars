@@ -10,13 +10,16 @@
 </head>
 <body>
 	<div class="container mt-4">
-
+		
 		<h3>
 			<strong>{{nickname}}</strong>
 			<input type="hidden" name="nickname" value="{{nickname}}" id="nickname">
 		</h3>
+
+		{{> logout}}
 		<br>
 		<div class="row">
+			
 			<div class="col-12 col-md-6">
 				<div disabled id="conversations" class="border border-1 border-dark"></div>
 				<textarea id="text" rows="2" class="border-1 form-control my-2" placeholder="Message"></textarea>

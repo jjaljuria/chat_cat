@@ -49,6 +49,10 @@ app.post('/login', (req, res) =>{
 	}).redirect('/')
 })
 
+app.get('/logout', (req,res) =>{
+	return res.clearCookie('chat_nickname').redirect('/login')
+})
+
 
 const server = app.listen(app.get('PORT'), () =>{
 	console.log('Server start in PORT ' + app.get('PORT'));

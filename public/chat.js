@@ -6,7 +6,6 @@ const conversations = document.getElementById('conversations');
 const nicknameFile = document.getElementById('nickname')
 
 send.addEventListener('click', ()=>{
-	console.log(nicknameFile.value);
 
 	socket.emit('chat', {
 		userId: socket.id, 
