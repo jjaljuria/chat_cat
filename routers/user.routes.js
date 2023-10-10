@@ -4,8 +4,8 @@ import encrypt from '../lib/encrypt.js'
 
 const router = Router()
 
-router.get('/user', async (req, res) => {
-  res.render('user.handlebars')
+router.get('/register', async (req, res) => {
+  res.render('register.handlebars')
 })
 
 router.post('/user', async (req, res) => {

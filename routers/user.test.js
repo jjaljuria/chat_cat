@@ -8,8 +8,8 @@ vi.mock('../database.js')
 vi.mock('../lib/encrypt.js')
 
 describe('create user', () => {
-  test('return 200 status code GET /user', async () => {
-    await request(app).get('/user').expect(200)
+  test('return 200 status code GET /register', async () => {
+    await request(app).get('/register').expect(200)
   })
 
   test('should register a user', async () => {
