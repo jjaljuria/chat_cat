@@ -36,11 +36,12 @@ app.get('/login', (req, res) => {
 
 app.post('/login', (req, res) => {
   const { nickname } = req.body
+  const millisecondsInADay = 1000 * 60 * 60 * 24
 
   if (!nickname) return res.status(400).send('error en el nickname')
 
   return res.cookie('chat_nickname', String(nickname), {
-    maxAge: 1000 * 60 * 60 * 24 * 5,
+    maxAge: millisecondsInADay * 5,
     sameSite: 'strict'
   }).redirect('/')
 })

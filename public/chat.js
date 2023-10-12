@@ -16,7 +16,7 @@ send.addEventListener('click', () => {
 
 socket.on('chat', ({ userId, text, nickname }) => {
   let username = 'you'
-  if (userId !== socket.id) {
+  if (userId !== socket.id && nicknameFile.value !== nickname) {
     username = nickname
   }
 
