@@ -1,12 +1,13 @@
 import express from 'express'
 import { Server } from 'socket.io'
-import { join } from 'path'
+import { join, dirname } from 'path'
 import { createServer } from 'node:http'
 import { engine } from 'express-handlebars'
 import cookieParser from 'cookie-parser'
 import userRouter from './routers/user.routes.js'
 
 const app = express()
+const __dirname = dirname(import.meta.url)
 
 app.engine('handlebars', engine({
   defaultLayout: false

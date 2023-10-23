@@ -17,12 +17,10 @@ describe('user routes', () => {
       password: '12345'
     }
 
-    const spy = vi.fn()
+    const spy = vi.spyOn(prisma.user, 'create').mockReturnValueOnce(Promise.resolve(mockUser))
 
-    prisma.user.create = spy
+    await request(app).post('/user').send(mockUser).expect(202)
 
-    await request(app).post('/user').send(JSON.stringify(mockUser)).expect(202)
-
-    expect(spy).toHaveBeenCalled()
+    expect(spy).toHaveBeenCalledWith(mockUser)
   })
 })
