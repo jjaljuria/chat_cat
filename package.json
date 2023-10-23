@@ -3,14 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "vitest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "5.4.2",
     "bootstrap": "^5.3.2",
     "cookie-parser": "^1.4.6",
     "dotenv": "16.3.1",
@@ -26,6 +29,8 @@
     "eslint-plugin-n": "^16.1.0",
     "eslint-plugin-promise": "^6.1.1",
     "nodemon": "^3.0.1",
+    "prisma": "5.4.2",
+    "supertest": "6.3.3",
     "vitest": "0.34.6"
   }
 }
