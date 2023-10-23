@@ -21,6 +21,6 @@ describe('user routes', () => {
 
     await request(app).post('/user').send(mockUser).expect(202)
 
-    expect(spy).toHaveBeenCalledWith(mockUser)
+    expect(spy).toHaveBeenCalledWith({ data: mockUser })
   })
 })

@@ -9,7 +9,7 @@ router.get('/user', async (req, res) => {
 
 router.post('/user', async (req, res) => {
   try {
-    prisma.user.create(req.body)
+    await prisma.user.create({ data: req.body })
     res.status(202).send()
   } catch (error) {
     res.status(500).send(error.message)
