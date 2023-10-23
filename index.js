@@ -1,13 +1,16 @@
 import express from 'express'
 import { Server } from 'socket.io'
-import { join, dirname } from 'path'
+import path from 'path'
+import { fileURLToPath } from 'node:url'
 import { createServer } from 'node:http'
 import { engine } from 'express-handlebars'
 import cookieParser from 'cookie-parser'
 import userRouter from './routers/user.routes.js'
 
 const app = express()
-const __dirname = dirname(import.meta.url)
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 app.engine('handlebars', engine({
   defaultLayout: false
@@ -18,8 +21,8 @@ app.set('views', './views')
 app.set('PORT', process.env.PORT || 3000)
 
 /** STATICS */
-app.use(express.static(join(__dirname, 'public')))
-app.use('/css', express.static(join(__dirname, '/node_modules/bootstrap/dist/css')))
+app.use(express.static('public'))
+app.use('/css', express.static(path.join(__dirname, './node_modules/bootstrap/dist/css/')))
 
 /** MIDDLEWARES */
 app.use(express.urlencoded({ extended: false }))
@@ -58,7 +61,7 @@ app.get('/logout', (req, res) => {
 })
 
 const server = createServer(app)
-server.listen(app.get('PORT'), () => {
+app.listen(app.get('PORT'), () => {
   console.log('Server start in PORT ' + app.get('PORT'))
 })
 
