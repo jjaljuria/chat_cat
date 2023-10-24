@@ -12,7 +12,7 @@ router.post('/user', async (req, res) => {
     await prisma.user.create({ data: req.body })
     res.status(202).send()
   } catch (error) {
-    res.status(500).send('<h1 class="p-3 mt-3 text-bg-warning text-center border rounded">Error with create user</h1>')
+    res.status(500).render('500.handlebars', { message: 'Error with create user' })
   }
 })
 
