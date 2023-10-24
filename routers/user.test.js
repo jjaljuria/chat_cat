@@ -2,10 +2,12 @@ import { describe, test, vi, expect } from 'vitest'
 import request from 'supertest'
 import app from '../index.js'
 import { prisma } from '../database.js'
+import encrypt from '../lib/encrypt.js'
 
 vi.mock('../database.js')
+vi.mock('../lib/encrypt.js')
 
-describe('user routes', () => {
+describe('create user', () => {
   test('return 200 status code GET /user', async () => {
     await request(app).get('/user').expect(200)
   })
@@ -18,6 +20,7 @@ describe('user routes', () => {
     }
 
     const spy = vi.spyOn(prisma.user, 'create').mockReturnValueOnce(Promise.resolve(mockUser))
+    encrypt.mockReturnValueOnce(Promise.resolve(mockUser.password))
 
     await request(app).post('/user').send(mockUser).expect(202)
 
