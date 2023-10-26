@@ -26,12 +26,8 @@ router.post('/login', async (req, res) => {
       return res.status(406).render('500.handlebars', { message: 'Password not matched' })
     }
 
-    const millisecondsInADay = 1000 * 60 * 60 * 24
-
-    return res.cookie('chat_nickname', String(userFound.nickname), {
-      maxAge: millisecondsInADay * 5,
-      sameSite: 'strict'
-    }).status(202).redirect('/')
+    req.session.user = userFound.id
+    res.status(202).redirect('/')
   } catch (error) {
     res.render('500.handlebars', { message: error })
   }
