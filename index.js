@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser'
 import expressSession from 'express-session'
 import { PrismaSessionStore } from '@quixo3/prisma-session-store'
 import { prisma } from './database.js'
+import { env } from './config.js';
 import userRouter from './routers/user.routes.js'
 import loginRouter from './routers/login.routes.js'
 
@@ -35,9 +36,9 @@ app.use(expressSession({
   cookie: {
     maxAge: 7 * 24 * 60 * 60 * 1000
   },
-  secret: 'secret',
+  secret: env.SESSION_SECRET,
   resave: true,
-  saveUninitialized: true,
+  saveUninitialized: false,
   store: new PrismaSessionStore(prisma, {
     dbRecordIdIsSessionId: true
   })
@@ -50,7 +51,7 @@ app.use(loginRouter)
 
 app.get('/', (req, res) => {
   const nickname = req.cookies.chat_nickname
-  req.session.name = 'jose'
+  
 
   if (!nickname) return res.redirect('/login')
 
