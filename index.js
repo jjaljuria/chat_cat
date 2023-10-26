@@ -6,6 +6,7 @@ import { createServer } from 'node:http'
 import { engine } from 'express-handlebars'
 import cookieParser from 'cookie-parser'
 import userRouter from './routers/user.routes.js'
+import loginRouter from './routers/login.routes.js'
 
 const app = express()
 
@@ -31,6 +32,7 @@ app.use(cookieParser('secret'))
 
 /** ROUTES */
 app.use(userRouter)
+app.use(loginRouter)
 
 app.get('/', (req, res) => {
   const nickname = req.cookies.chat_nickname
@@ -38,22 +40,6 @@ app.get('/', (req, res) => {
   if (!nickname) return res.redirect('/login')
 
   res.render('index.handlebars', { nickname })
-})
-
-app.get('/login', (req, res) => {
-  res.render('login.handlebars')
-})
-
-app.post('/login', (req, res) => {
-  const { nickname } = req.body
-  const millisecondsInADay = 1000 * 60 * 60 * 24
-
-  if (!nickname) return res.status(400).send('error en el nickname')
-
-  return res.cookie('chat_nickname', String(nickname), {
-    maxAge: millisecondsInADay * 5,
-    sameSite: 'strict'
-  }).redirect('/')
 })
 
 app.get('/logout', (req, res) => {
