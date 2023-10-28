@@ -19,9 +19,7 @@ const app = express()
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-app.engine('handlebars', engine({
-  defaultLayout: false
-}))
+app.engine('handlebars', engine())
 app.set('view engine', 'handlebars')
 app.set('views', './views')
 
