@@ -3,7 +3,7 @@ import { Server } from 'socket.io'
 import path from 'path'
 import { fileURLToPath } from 'node:url'
 import { createServer } from 'node:http'
-import hbs from 'express-hbs'
+import helpers from './views/helpers/helpers.js'
 import cookieParser from 'cookie-parser'
 import expressSession from 'express-session'
 import { PrismaSessionStore } from '@quixo3/prisma-session-store'
@@ -13,17 +13,15 @@ import userRouter from './routers/user.routes.js'
 import loginRouter from './routers/login.routes.js'
 import userVerify from './middlewares/userVerify.js'
 import morgan from 'morgan'
+import { engine } from 'express-handlebars'
 
 const app = express()
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-app.engine('handlebars', hbs.express4({
-  partialsDir: path.join(__dirname, './views/partials'),
-  layoutsDir: path.join(__dirname, './views/layouts'),
-  defaultLayout: path.join(__dirname, './views/layouts/main.handlebars'),
-  extname: '.handlebars'
+app.engine('handlebars', engine({
+  helpers
 }))
 app.set('view engine', 'handlebars')
 app.set('views', './views')
