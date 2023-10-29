@@ -6,13 +6,12 @@
         <title>Chat Cat</title>
         <link rel="stylesheet" href="css/bootstrap.min.css.map">
         <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="chat.css">
+          {{{ block "styles" }}}
     </head>
     <body>
         {{{ body }}}
 
-        {{#if @partial-block}}
-            {{> @partial-block scripts}}
-        {{/if}}
+        {{{block "scripts"}}}
     </body>
 </html>
+

@@ -3,7 +3,7 @@ import { Server } from 'socket.io'
 import path from 'path'
 import { fileURLToPath } from 'node:url'
 import { createServer } from 'node:http'
-import { engine } from 'express-handlebars'
+import hbs from 'express-hbs'
 import cookieParser from 'cookie-parser'
 import expressSession from 'express-session'
 import { PrismaSessionStore } from '@quixo3/prisma-session-store'
@@ -19,7 +19,12 @@ const app = express()
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-app.engine('handlebars', engine())
+app.engine('handlebars', hbs.express4({
+  partialsDir: path.join(__dirname, './views/partials'),
+  layoutsDir: path.join(__dirname, './views/layouts'),
+  defaultLayout: path.join(__dirname, './views/layouts/main.handlebars'),
+  extname: '.handlebars'
+}))
 app.set('view engine', 'handlebars')
 app.set('views', './views')
 
