@@ -11,6 +11,7 @@ import { prisma } from './database.js'
 import { env } from './config.js'
 import userRouter from './routers/user.routes.js'
 import loginRouter from './routers/login.routes.js'
+import logoutRouter from './routers/logout.routes.js'
 import userVerify from './middlewares/userVerify.js'
 import morgan from 'morgan'
 import { engine } from 'express-handlebars'
@@ -52,14 +53,11 @@ app.use(morgan('dev'))
 /** ROUTES */
 app.use(userRouter)
 app.use(loginRouter)
+app.use(logoutRouter)
 
 app.get('/', userVerify, (req, res) => {
   const user = req.session.user
   res.render('index.handlebars', { user })
-})
-
-app.get('/logout', (req, res) => {
-  return res.clearCookie('chat_nickname').redirect('/login')
 })
 
 const server = createServer(app)
