@@ -14,7 +14,7 @@ describe('Login User', () => {
     await request(app).get('/login').send().expect(200)
   })
 
-  test('should return 202 when send user and password validates  POST /login', async () => {
+  test('should send user and password validates and redirect to /', async () => {
     const user = {
       email: 'jose@email.com',
       password: '12345'
@@ -23,7 +23,8 @@ describe('Login User', () => {
     prisma.user.findUnique = vi.fn().mockReturnValueOnce(Promise.resolve(user))
     decrypt.mockReturnValueOnce(Promise.resolve(true))
 
-    await request(app).post('/login').send(user).expect(202)
+    await request(app).post('/login').send(user)
+      .expect('Location', '/')
   })
 
   test('should show message with user not found', async () => {

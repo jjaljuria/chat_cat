@@ -27,7 +27,7 @@ router.post('/login', async (req, res) => {
     }
 
     req.session.user = userFound.id
-    res.status(202).redirect('/')
+    res.redirect('/')
   } catch (error) {
     res.render('500.handlebars', { message: error })
   }
