@@ -4,7 +4,13 @@ import app from '../index.js'
 import { prisma } from '../database.js'
 import encrypt from '../lib/encrypt.js'
 
-vi.mock('../database.js')
+vi.mock('../database.js', () => ({
+  prisma: {
+    user: {
+      create: vi.fn()
+    }
+  }
+}))
 vi.mock('../lib/encrypt.js')
 
 describe('create user', () => {
@@ -19,12 +25,12 @@ describe('create user', () => {
       password: '12345'
     }
 
-    const spy = vi.spyOn(prisma.user, 'create').mockReturnValueOnce(Promise.resolve(mockUser))
+    prisma.user.create.mockReturnValueOnce(Promise.resolve(mockUser))
     encrypt.mockReturnValueOnce(Promise.resolve(mockUser.password))
 
     await request(app).post('/user').send(mockUser).expect(202)
 
-    expect(spy).toHaveBeenCalledWith({ data: mockUser })
+    expect(prisma.user.create).toHaveBeenCalledWith({ data: mockUser })
   })
 
   test('should show message "user exits" when try create a user with same nickname or email', async () => {
@@ -36,8 +42,7 @@ describe('create user', () => {
 
     const errorMessage = /Error\swith\screate\suser/i
 
-    const spy = vi.spyOn(prisma.user, 'create')
-    spy.mockRejectedValueOnce(new Error())
+    prisma.user.create.mockRejectedValueOnce(new Error())
 
     await request(app).post('/user').send(mockUser)
       .expect(500)
