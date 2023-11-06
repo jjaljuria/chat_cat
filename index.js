@@ -15,6 +15,7 @@ import logoutRouter from './routers/logout.routes.js'
 import userVerify from './middlewares/userVerify.js'
 import morgan from 'morgan'
 import { engine } from 'express-handlebars'
+import logger from './lib/logger.js'
 
 const app = express()
 
