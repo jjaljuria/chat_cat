@@ -2,7 +2,7 @@
 
 Un simple chat web
 
-## Instalacion
+## Instalación
 
 Ejecute el siguientes comando:
 
@@ -23,3 +23,12 @@ npm start
 /* ejecuta en modo de desarrollo */
 npm run dev
 ```
+
+## Variables de entorno
+crea un archivo .env o agrega las variables en el package.json
+
+* DATABASE_URL: la dirección de la base de datos, si no se específica, hace referencia al localhost
+
+* SESSION_SECRET: palabra que se usa para cifrar las sesiones, por defecto tiene el valor "secret"
+
+* DEBUG: valor booleano que activa los mensajes de nivel debug, por defecto false
