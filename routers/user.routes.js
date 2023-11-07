@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { prisma } from '../database.js'
 import encrypt from '../lib/encrypt.js'
+import logger from '../lib/logger.js'
 
 const router = Router()
 
@@ -13,7 +14,7 @@ router.post('/user', async (req, res) => {
     await prisma.user.create({ data: { ...req.body, password: await encrypt(req.body.password) } })
     res.status(202).send()
   } catch (error) {
-    console.trace(error)
+    logger.error(error)
     res.status(500).render('500.handlebars', { message: 'Error with create user' })
   }
 })

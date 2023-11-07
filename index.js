@@ -63,12 +63,12 @@ app.get('/', userVerify, (req, res) => {
 
 const server = createServer(app)
 server.listen(app.get('PORT'), () => {
-  console.log('Server start in PORT ' + app.get('PORT'))
+  logger.info('Server start in PORT ' + app.get('PORT'))
 })
 
 const io = new Server(server)
 io.on('connection', (socket) => {
-  console.log('Contected in ' + socket.id)
+  logger.info('Contected in ' + socket.id)
   socket.on('chat', (data) => {
     io.sockets.emit('chat', data)
   })
