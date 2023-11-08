@@ -12,16 +12,16 @@ git clone https://github.com/jjaljuria/chat_cat.git
 ```
 Instalar dependencias
 ```
-pnpm install
+npm install o pnpm install
 ```
 ejecute `npm start` e ingrese a `http://localhost:3000` en su navegador
 ## Comandos
 ```
 /* ejecuta el servidor */ 
-pnpm start
+npm start o pnpm start
 
 /* ejecuta en modo de desarrollo */
-pnpm dev
+npm run dev o pnpm dev
 ```
 
 ## Variables de entorno
