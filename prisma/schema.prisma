@@ -22,4 +22,34 @@ model  User{
   nickname String @unique
   email String @unique
   password String
+  conversations UserConversation[]
+}
+
+model Conversation{
+  id String @id @default(uuid())
+  users UserConversation[]
+  messages Message[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model UserConversation{
+  idUser String
+  user User @relation(fields: [idUser], references: [id])
+
+  idConversation String
+  conversation Conversation @relation(fields: [idConversation], references: [id])
+
+  @@id([idUser, idConversation])
+}
+
+model Message{
+  id String @id @default(uuid())
+  text String
+  idConversation String
+  conversation Conversation @relation(fields: [idConversation], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
