@@ -4,13 +4,7 @@ import app from '../index.js'
 import { prisma } from '../database.js'
 import encrypt from '../lib/encrypt.js'
 
-vi.mock('../database.js', () => ({
-  prisma: {
-    user: {
-      create: vi.fn()
-    }
-  }
-}))
+vi.mock('../database.js')
 vi.mock('../lib/encrypt.js')
 
 describe('create user', () => {

@@ -2,6 +2,7 @@ import { describe, test, vi } from 'vitest'
 import request from 'supertest'
 import app from '../index.js'
 
+vi.mock('../database.js')
 vi.mock('../middlewares/userVerify.js', () => {
   return {
     default: (req, res, next) => {
