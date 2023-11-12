@@ -5,5 +5,9 @@ export const prisma = {
     create: vi.fn(),
     findMany: vi.fn(),
     findUnique: vi.fn()
+  },
+  conversation: {
+    findMany: vi.fn(),
+    create: vi.fn()
   }
 }

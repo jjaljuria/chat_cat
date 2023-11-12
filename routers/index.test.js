@@ -4,13 +4,7 @@ import app from '../index.js'
 import { prisma } from '../database.js'
 
 vi.mock('../database.js')
-vi.mock('../middlewares/userVerify.js', () => {
-  return {
-    default: (req, res, next) => {
-      next()
-    }
-  }
-})
+vi.mock('../middlewares/verifyExistUser.js')
 
 describe('Index Page', () => {
   test('should return status code 200', async () => {

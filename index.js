@@ -12,7 +12,8 @@ import { env } from './config.js'
 import userRouter from './routers/user.routes.js'
 import loginRouter from './routers/login.routes.js'
 import logoutRouter from './routers/logout.routes.js'
-import userVerify from './middlewares/userVerify.js'
+import conversationRouter from './routers/conversation.routes.js'
+import userVerify from './middlewares/verifyExistUser.js'
 import morgan from 'morgan'
 import { engine } from 'express-handlebars'
 import logger from './lib/logger.js'
@@ -55,6 +56,7 @@ app.use(morgan('dev'))
 app.use(userRouter)
 app.use(loginRouter)
 app.use(logoutRouter)
+app.use(conversationRouter)
 
 app.get('/', userVerify, (req, res) => {
   const user = req.session.user

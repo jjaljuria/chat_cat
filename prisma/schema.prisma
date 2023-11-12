@@ -31,7 +31,7 @@ model Conversation{
   messages Message[]
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model UserConversation{
@@ -51,5 +51,5 @@ model Message{
   conversation Conversation @relation(fields: [idConversation], references: [id])
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
