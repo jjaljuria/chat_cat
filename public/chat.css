@@ -12,3 +12,11 @@
 	resize: none;
 	outline: none;
 }
+
+.height-header{
+	height: 7vh;
+}
+
+.height-chat{
+	height: 93vh;
+}

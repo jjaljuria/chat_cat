@@ -2,42 +2,40 @@
 	<link rel="stylesheet" href="chat.css">
 {{/contentFor}}
 
-<div class="container-fluid">
-	<header class="row border" >
-		<section class="cal-12 col-md-4 py-1 border-end">
+<div class="container-fluid min-vh-100">
+	<header class="row border align-items-center height-header" >
+		<section class="cal-12 col-sm-4 col-md-4 border-end">
 			<h3 class="text-truncate">{{user.nickname}}</h3>
 		</section>
 	</header>
-	Conversaciones: <br/>
-	<ul>
-	{{#each conversations as |conversation|}}
-		{{#each conversation.users as |users|}}
-			{{#each users as |user|}}
-				<li>
-					{{user.nickname}}
-				</li>		
+
+	<div class="row height-chat">
+		<aside class="col-12 col-sm-4 col-md-4 border">
+		Conversaciones: <br/>
+			<ul>
+			{{#each conversations as |conversation|}}
+				{{#each conversation.users as |users|}}
+					{{#each users as |user|}}
+						<li>
+							{{user.nickname}}
+						</li>		
+					{{/each}}
+				{{/each}}
 			{{/each}}
-		{{/each}}
-	{{/each}}
-	</ul>
+			</ul>
+		</aside>
 
-	<h3>
-		<strong>{{nickname}}</strong>
-		<input type="hidden" name="nickname" value="{{nickname}}" id="nickname">
-	</h3>
+		<section class="col-12 col-sm-8 border d-none d-sm-block">
 
-	{{> logout}}
-	<br>
-	<div class="row">
-
-		<div class="col-12 col-md-6">
-			<div disabled id="conversations" class="border border-1 border-dark"></div>
-			<textarea id="text" rows="2" class="border-1 form-control my-2" placeholder="Message"></textarea>
-		</div>
+			{{> logout}}
+			
+		</section>
 	</div>
-	<button id="send" class="btn btn-primary" autofocus>Send</button>
+
+
+
+
 	
-</div>
 
 {{#contentFor "scripts"}}
 	<script src="/socket.io/socket.io.js"></script>
