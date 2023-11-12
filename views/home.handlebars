@@ -3,7 +3,19 @@
 {{/contentFor}}
 
 <div class="container mt-4">
-	{{conversations}}
+	<header>{{user.nickname}}</header>
+	Conversaciones: <br/>
+	<ul>
+	{{#each conversations as |conversation|}}
+		{{#each conversation.users as |users|}}
+			{{#each users as |user|}}
+				<li>
+					{{user.nickname}}
+				</li>		
+			{{/each}}
+		{{/each}}
+	{{/each}}
+	</ul>
 
 	<h3>
 		<strong>{{nickname}}</strong>

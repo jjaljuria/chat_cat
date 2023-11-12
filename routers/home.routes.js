@@ -1,10 +1,14 @@
 import { Router } from 'express'
-import verifyExistUser from '../middlewares/verifyExistUser'
+import verifyExistUser from '../middlewares/verifyExistUser.js'
+import * as conversationServices from '../services/conversation.js';
+import * as userServices from '../services/user.js';
 
 const router = Router()
 
-router.get('/', verifyExistUser, (req, res) => {
-  const user = req.session.user
-  res.render('home.handlebars', { user })
+router.get('/', verifyExistUser, async (req, res) => {
+  const user = await userServices.get(req.session.user)
+  const conversations = await conversationServices.getAllOf(user)
+
+  res.render('home.handlebars', { conversations, user })
 })
 export default router

@@ -1,5 +1,5 @@
-import { prisma } from '../database'
-import logger from '../lib/logger'
+import { prisma } from '../database.js'
+import logger from '../lib/logger.js'
 
 export const create = async (myId, otherId) => {
   try {

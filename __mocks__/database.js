@@ -4,7 +4,8 @@ export const prisma = {
   user: {
     create: vi.fn(),
     findMany: vi.fn(),
-    findUnique: vi.fn()
+    findUnique: vi.fn(),
+    findFirst: vi.fn()
   },
   conversation: {
     findMany: vi.fn(),
