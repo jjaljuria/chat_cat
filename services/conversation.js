@@ -35,29 +35,32 @@ export const create = async (myId, otherId) => {
   }
 }
 
-// try {
-//   const conversations = await prisma.conversation.findMany({
-//     where: {
-//       users: {
-//         some: {
-//           idUser: myId
-//         }
-//       }
-//     },
-//     include: {
-//       users: {
-//         select: {
-//           user: {
-//             select: {
-//               id: true,
-//               nickname: true,
-//               email: true
-//             }
-//           }
-//         }
-//       }
-//     }
-//   })
-// } catch (error) {
-//   logger.error(error.message)
-// }
+export const getAllOf = async (myId, otherId) => {
+  try {
+    const conversations = await prisma.conversation.findMany({
+      where: {
+        users: {
+          some: {
+            idUser: myId
+          }
+        }
+      },
+      include: {
+        users: {
+          select: {
+            user: {
+              select: {
+                id: true,
+                nickname: true,
+                email: true
+              }
+            }
+          }
+        }
+      }
+    })
+    return conversations
+  } catch (error) {
+    logger.error(error.message)
+  }
+}

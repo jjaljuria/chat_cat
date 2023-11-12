@@ -1,12 +1,12 @@
 import { describe, test, vi, expect } from 'vitest'
-import { create } from './conversation.js'
+import { create, getAllOf } from './conversation.js'
 import { prisma } from '../database.js'
 
 vi.mock('../database.js')
 
 describe('Conversation Services', () => {
   describe('Conversation.create', () => {
-    test('should defined created', () => {
+    test('should to be defined created', () => {
       expect(create).toBeDefined()
     })
 
@@ -34,6 +34,40 @@ describe('Conversation Services', () => {
       create(myId, otherId)
 
       expect(prisma.conversation.create).toHaveBeenCalled()
+    })
+  })
+
+  describe('Conversation.getAllOf', () => {
+    test('should getAllOf to be defined', () => {
+      expect(getAllOf).toBeDefined()
+    })
+
+    test('should return all conversations of an user', async () => {
+      const myId = 1
+      const conversations = [
+        {
+          id: 1,
+          createAt: Date.now(),
+          updatedAt: Date.now()
+        },
+        {
+          id: 2,
+          createAt: Date.now(),
+          updatedAt: Date.now()
+        },
+        {
+          id: 2,
+          createAt: Date.now(),
+          updatedAt: Date.now()
+        }
+
+      ]
+
+      prisma.conversation.findMany.mockReturnValueOnce(Promise.resolve(conversations))
+
+      const conversationFound = await getAllOf(myId)
+
+      expect(conversationFound).toEqual(conversations)
     })
   })
 })
