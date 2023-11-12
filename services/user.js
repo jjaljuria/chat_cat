@@ -3,7 +3,11 @@ import logger from '../lib/logger.js'
 
 export const get = async (id) => {
   try {
-    const user = await prisma.user.findFirst(id)
+    const user = await prisma.user.findFirst({
+      where: {
+        id
+      }
+    })
     return user
   } catch (error) {
     logger.error(error.message)
