@@ -8,5 +8,10 @@ export default {
     const blocks = this._blocks || (this._blocks = {})
     const block = blocks[name] || (blocks[name] = []) // Changed this to [] instead of {}
     block.push(options.fn(this))
+  },
+  notEquals: function (a, b, options) {
+    if (a !== b) {
+      return options.fn(this)
+    }
   }
 }
