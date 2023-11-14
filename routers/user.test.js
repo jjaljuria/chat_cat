@@ -3,9 +3,15 @@ import request from 'supertest'
 import app from '../index.js'
 import { prisma } from '../database.js'
 import encrypt from '../lib/encrypt.js'
+import verifyExistUser from '../middlewares/verifyExistUser.js'
 
 vi.mock('../database.js')
 vi.mock('../lib/encrypt.js')
+vi.mock('../middlewares/verifyExistUser.js', () => {
+  return {
+    default: vi.fn()
+  }
+})
 
 describe('create user', () => {
   test('return 200 status code GET /register', async () => {
@@ -41,5 +47,35 @@ describe('create user', () => {
     await request(app).post('/user').send(mockUser)
       .expect(500)
       .expect(errorMessage)
+  })
+
+  test('should return the users that match the search text but not the current user', async () => {
+    const myId = 1
+    const otherId = 2
+    const textToFind = 'user'
+
+    const users = [
+      {
+        id: myId,
+        nickname: 'user1'
+      },
+      {
+        id: otherId,
+        nickname: 'user2'
+      }
+    ]
+
+    verifyExistUser.mockImplementationOnce((req, res, next) => {
+      req.session.user = myId
+      next()
+    })
+    prisma.user.findMany.mockReturnValueOnce(Promise.resolve(users))
+    const response = await request(app).get('/user').query({
+      find: textToFind
+    }).send()
+      .expect(200)
+      .expect('Content-Type', /json/)
+
+    expect(response.body.some(user => user.id === myId)).toBe(false)
   })
 })

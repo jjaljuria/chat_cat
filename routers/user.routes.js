@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { prisma } from '../database.js'
 import encrypt from '../lib/encrypt.js'
 import logger from '../lib/logger.js'
+import verifyExistUser from '../middlewares/verifyExistUser.js'
 
 const router = Router()
 
@@ -19,8 +20,9 @@ router.post('/user', async (req, res) => {
   }
 })
 
-router.get('/user', async (req, res) => {
+router.get('/user', verifyExistUser, async (req, res) => {
   const { find } = req.query
+  const { user: userId } = req.session
 
   try {
     const usersFound = await prisma.user.findMany({
@@ -35,7 +37,7 @@ router.get('/user', async (req, res) => {
       }
     })
 
-    return res.json(usersFound)
+    return res.json(usersFound.filter(user => user.id !== userId))
   } catch (error) {
     logger.error(error)
   }
