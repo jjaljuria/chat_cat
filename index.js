@@ -13,6 +13,7 @@ import userRouter from './routers/user.routes.js'
 import loginRouter from './routers/login.routes.js'
 import logoutRouter from './routers/logout.routes.js'
 import homeRouter from './routers/home.routes.js'
+import conversationRouter from './routers/conversation.routes.js'
 import morgan from 'morgan'
 import { engine } from 'express-handlebars'
 import logger from './lib/logger.js'
@@ -33,6 +34,8 @@ app.set('PORT', process.env.PORT || 3000)
 /** STATICS */
 app.use(express.static('public'))
 app.use('/css', express.static(path.join(__dirname, './node_modules/bootstrap/dist/css/')))
+app.use('/js', express.static(path.join(__dirname, './node_modules/bootstrap/dist/js/')))
+app.use('/js', express.static(path.join(__dirname, './node_modules/@popperjs/core/dist/umd/')))
 
 /** MIDDLEWARES */
 app.use(express.urlencoded({ extended: false }))
@@ -56,6 +59,7 @@ app.use(userRouter)
 app.use(loginRouter)
 app.use(logoutRouter)
 app.use(homeRouter)
+app.use(conversationRouter)
 
 const server = createServer(app)
 server.listen(app.get('PORT'), () => {
