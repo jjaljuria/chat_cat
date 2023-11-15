@@ -16,7 +16,7 @@ search.addEventListener('input', async (e) => {
   const response = await fetch(`/user?find=${textToFind}`)
   const users = await response.json()
 
-  const usersHTML = users.map(user => `<li class="list-group-item list-group-item-action">${user.nickname}</li>`).join('')
+  const usersHTML = users.map(user => `<li class="list-group-item list-group-item-action p-0"><a class="text-reset text-decoration-none py-2 px-3 d-block" draggable="false" href="/${user.id}" >${user.nickname}</a></li>`).join('')
   listUsers.innerHTML = usersHTML
 })
 

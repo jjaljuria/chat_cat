@@ -74,4 +74,6 @@ io.on('connection', (socket) => {
   })
 })
 
+app.io = io
+
 export default app
