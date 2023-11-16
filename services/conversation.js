@@ -64,3 +64,23 @@ export const getAllOf = async (myId, otherId) => {
     logger.error(error.message)
   }
 }
+
+export const hasConversationWith = async (myId, otherId) => {
+  try {
+    const result = await prisma.conversation.findFirst({
+      where: {
+        users: {
+          some: {
+            AND: [
+              { idUser: myId },
+              { idUser: otherId }
+            ]
+          }
+        }
+      }
+    })
+    return result
+  } catch (error) {
+    logger.error(error.message)
+  }
+}

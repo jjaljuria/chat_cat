@@ -1,5 +1,5 @@
 import { describe, test, vi, expect } from 'vitest'
-import { create, getAllOf } from './conversation.js'
+import { create, getAllOf, hasConversationWith } from './conversation.js'
 import { prisma } from '../database.js'
 
 vi.mock('../database.js')
@@ -68,6 +68,18 @@ describe('Conversation Services', () => {
       const conversationFound = await getAllOf(myId)
 
       expect(conversationFound).toEqual(conversations)
+    })
+  })
+
+  describe('Conversation.has', () => {
+    test('should if user already a conversation with the otro user return the conversation else return null', async () => {
+      const myId = 1
+      const otherId = 2
+      const existConversationId = 1
+
+      const result = await hasConversationWith(myId, otherId)
+
+      expect(result?.id).toBe(existConversationId)
     })
   })
 })
