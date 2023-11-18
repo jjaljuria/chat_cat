@@ -58,11 +58,18 @@ export const hasConversationWith = async (myId, otherId) => {
     const result = await prisma.conversation.findFirst({
       where: {
         users: {
-          some: {
-            AND: [
-              { idUser: myId },
-              { idUser: otherId }
-            ]
+          every: {
+            id: {
+              in: [myId, otherId]
+            }
+          }
+        }
+      },
+      include: {
+        users: {
+          select: {
+            id: true,
+            nickname: true
           }
         }
       }

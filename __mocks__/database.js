@@ -9,6 +9,7 @@ export const prisma = {
   },
   conversation: {
     findMany: vi.fn(),
-    create: vi.fn()
+    create: vi.fn(),
+    findFirst: vi.fn()
   }
 }
