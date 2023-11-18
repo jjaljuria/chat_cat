@@ -6,20 +6,11 @@ export const create = async (myId, otherId) => {
     const newConversation = await prisma.conversation.create({
       data: {
         users: {
-          create: [
+          connect: [
             {
-              user: {
-                connect: {
-                  id: myId
-                }
-              }
-            },
-            {
-              user: {
-                connect: {
-                  id: otherId
-                }
-              }
+              id: myId
+            }, {
+              id: otherId
             }
           ]
         }
@@ -35,30 +26,27 @@ export const create = async (myId, otherId) => {
   }
 }
 
-export const getAllOf = async (myId, otherId) => {
+export const getAllOf = async (myId) => {
   try {
     const conversations = await prisma.conversation.findMany({
       where: {
         users: {
           some: {
-            idUser: myId
+            id: myId
           }
         }
       },
       include: {
         users: {
           select: {
-            user: {
-              select: {
-                id: true,
-                nickname: true,
-                email: true
-              }
-            }
+            id: true,
+            nickname: true,
+            email: true
           }
         }
       }
     })
+
     return conversations
   } catch (error) {
     logger.error(error.message)

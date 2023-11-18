@@ -28,14 +28,12 @@
 
 			<ul>
 			{{#each conversations as |conversation|}}
-				{{#each conversation.users as |users|}}
-					{{#each users as |user|}}
-						{{#notEquals @root.user.id user.id}}
-							<li>
-								{{user.nickname}}
-							</li>
-						{{/notEquals}}
-					{{/each}}
+				{{#each conversation.users as |user|}}
+					{{#notEquals @root.user.id user.id}}
+						<li>
+							{{user.nickname}}
+						</li>
+					{{/notEquals}}
 				{{/each}}
 			{{/each}}
 			</ul>
