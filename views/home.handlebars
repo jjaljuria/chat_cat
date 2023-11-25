@@ -26,11 +26,11 @@
 				</form>
 			</section id="converations">
 
-			<ul>
+			<ul class="list-group">
 			{{#each conversations as |conversation|}}
 				{{#each conversation.users as |user|}}
 					{{#notEquals @root.user.id user.id}}
-						<li>
+						<li class="list-group-item list-group-item-action rounded-0" onclick="connectTo('{{conversation.id}}')">
 							{{user.nickname}}
 						</li>
 					{{/notEquals}}
@@ -39,11 +39,7 @@
 			</ul>
 		</aside>
 
-		<section class="col-12 col-sm-8 border d-none d-sm-block p-0">
-
-			{{> chat}}
-
-		</section>
+		{{> chat}}
 	</div>
 
 

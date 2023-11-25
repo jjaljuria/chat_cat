@@ -21,8 +21,8 @@ search.addEventListener('input', async (e) => {
 })
 
 // eslint-disable-next-line no-unused-vars
-function connectTo (idUser) {
-  console.log(idUser)
+function connectTo (idConversation) {
+  console.log(idConversation)
 }
 
 // send.addEventListener('click', () => {
