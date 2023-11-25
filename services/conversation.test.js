@@ -1,5 +1,5 @@
 import { describe, test, vi, expect } from 'vitest'
-import { create, getAllOf, hasConversationWith, get } from './conversation.js'
+import { create, getAllOf, hasConversationWith, get, createMessage } from './conversation.js'
 import { prisma } from '../database.js'
 
 vi.mock('../database.js')
@@ -96,6 +96,23 @@ describe('Conversation Services', () => {
 
       const res = await get(idConversation)
       expect(res).toBeNull()
+    })
+  })
+
+  describe('Conversation.createMessage', () => {
+    test('should set object with text message, id conversation and return Message object', async () => {
+      const textMessage = 'hello world'
+      const idConversation = 1
+
+      prisma.message.create.mockReturnValueOnce(Promise.resolve({ id: 1, idConversation, text: textMessage }))
+
+      const message = await createMessage({
+        idConversation,
+        text: textMessage
+      })
+
+      expect(message.id).toBeDefined()
+      expect(message.text).toBeDefined()
     })
   })
 })

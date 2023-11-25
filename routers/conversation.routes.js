@@ -25,10 +25,15 @@ router.post('/conversation', async (req, res) => {
 
 router.get('/conversation/:id', verifyExistUser, async (req, res) => {
   const { id } = req.params
-
+  console.log(id)
   const conversation = await conversationServices.get(String(id))
 
-  return conversation
+  return res.status(200).json(conversation)
+})
+
+router.post('/conversation/:id/message', async (req, res) => {
+  const { id } = req.params
+  req.send(id)
 })
 
 export default router

@@ -85,10 +85,33 @@ export const get = async (idConversation) => {
     const conversation = await prisma.conversation.findFirst({
       where: {
         id: idConversation
+      },
+      include: {
+        messages: true
       }
     })
 
     return conversation
+  } catch (error) {
+    logger.error(error.message)
+    return null
+  }
+}
+
+export const createMessage = async ({ idConversation, text }) => {
+  if (!idConversation || !text) throw new Error('less idConversation or text')
+
+  try {
+    return prisma.message.create({
+      data: {
+        text,
+        conversation: {
+          connect: {
+            id: idConversation
+          }
+        }
+      }
+    })
   } catch (error) {
     logger.error(error.message)
     return null

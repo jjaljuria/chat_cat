@@ -11,5 +11,8 @@ export const prisma = {
     findMany: vi.fn(),
     create: vi.fn(),
     findFirst: vi.fn()
+  },
+  message: {
+    create: vi.fn()
   }
 }
