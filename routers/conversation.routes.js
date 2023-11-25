@@ -14,6 +14,7 @@ router.post('/conversation', async (req, res) => {
       return res.status(200).json(existConversation)
     }
     const newConversation = await conversationServices.create(myId, otherId)
+
     return res.status(201).json(newConversation)
   } catch (error) {
     logger.error(error.message)

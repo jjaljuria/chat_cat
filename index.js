@@ -68,7 +68,7 @@ server.listen(app.get('PORT'), () => {
 
 const io = new Server(server)
 io.on('connection', (socket) => {
-  logger.info('Contected in ' + socket.id)
+  logger.info({ socket })
   socket.on('chat', (data) => {
     io.sockets.emit('chat', data)
   })

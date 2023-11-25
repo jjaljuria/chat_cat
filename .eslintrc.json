@@ -11,7 +11,7 @@
     "parserOptions": {
         "ecmaVersion": "latest"
     },
-    "plugins" [
+    "plugins": [
         "cypress"
     ],
     "rules": {
