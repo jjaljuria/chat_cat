@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import logger from '../lib/logger.js'
 import * as conversationServices from '../services/conversation.js'
+import verifyExistUser from '../middlewares/verifyExistUser.js'
 const router = Router()
 
 router.post('/conversation', async (req, res) => {
@@ -20,6 +21,14 @@ router.post('/conversation', async (req, res) => {
     logger.error(error.message)
     res.status(500)
   }
+})
+
+router.get('/conversation/:id', verifyExistUser, async (req, res) => {
+  const { id } = req.params
+
+  const conversation = await conversationServices.get(String(id))
+
+  return conversation
 })
 
 export default router

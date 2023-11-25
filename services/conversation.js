@@ -79,3 +79,18 @@ export const hasConversationWith = async (myId, otherId) => {
     logger.error(error.message)
   }
 }
+
+export const get = async (idConversation) => {
+  try {
+    const conversation = await prisma.conversation.findFirst({
+      where: {
+        id: idConversation
+      }
+    })
+
+    return conversation
+  } catch (error) {
+    logger.error(error.message)
+    return null
+  }
+}

@@ -1,5 +1,5 @@
 import { describe, test, vi, expect } from 'vitest'
-import { create, getAllOf, hasConversationWith } from './conversation.js'
+import { create, getAllOf, hasConversationWith, get } from './conversation.js'
 import { prisma } from '../database.js'
 
 vi.mock('../database.js')
@@ -79,6 +79,23 @@ describe('Conversation Services', () => {
 
       const result = await hasConversationWith('30955d5f-c925-4dae-85e6-4d0cf61e7bb6', 'f5329e88-f3d7-437f-9937-9f7591353b8d')
       console.log(result)
+    })
+  })
+
+  describe('Conversation.get', () => {
+    test('should when send a id that exist return conversation', async () => {
+      const idConversation = 1
+      prisma.conversation.findFirst.mockReturnValueOnce(Promise.resolve({ id: idConversation }))
+
+      const res = await get(idConversation)
+      expect(res.id).toBeDefined()
+    })
+    test('should when send a id that not exist return null', async () => {
+      const idConversation = 1
+      prisma.conversation.findFirst.mockReturnValueOnce(Promise.resolve(null))
+
+      const res = await get(idConversation)
+      expect(res).toBeNull()
     })
   })
 })
