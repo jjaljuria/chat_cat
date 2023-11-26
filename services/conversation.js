@@ -87,7 +87,11 @@ export const get = async (idConversation) => {
         id: idConversation
       },
       include: {
-        messages: true
+        messages: {
+          orderBy: {
+            createdAt: 'asc'
+          }
+        }
       }
     })
 

@@ -26,6 +26,8 @@ async function connectTo (idConversation) {
   const res = await fetch(`/conversation/${idConversation}`)
   const conversation = await res.json()
   const messageBox = document.getElementById('messageBox')
+  const chat = document.getElementById('chat')
+  chat.dataset.currentConversation = conversation.id
 
   clearMessages(messageBox)
   renderMessage({ messageBox, messages: conversation.messages })
@@ -41,22 +43,24 @@ function renderMessage ({ messages, messageBox }) {
   }
   console.log(messages)
   messages.forEach(message => {
-    messageBox.innerHTML = `<div>${message.text}<small>${new Date(message.createdAt).toLocaleTimeString()}</small></div>`
+    messageBox.innerHTML += `<div><small>${new Date(message.createdAt).toLocaleTimeString()}</small> : ${message.text}</div>`
   })
 }
 
 async function sendMessage (idConversation) {
+  const chat = document.getElementById('chat')
+  const messageInput = document.getElementById('messageInput')
   const text = String(messageInput.value)
 
-  const res = await fetch(`/conversation/${idConversation}/message`, {
+  await fetch(`/conversation/${chat.dataset.currentConversation}/message`, {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ text })
   })
 
-  const message = await res.json()
-  console.log({ message })
+  messageInput.value = ''
 }
 
 // socket.on('chat', ({ userId, text, nickname }) => {
