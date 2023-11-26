@@ -1,7 +1,7 @@
-// const socket = io()
+const socket = io()
 
-// const send = document.getElementById('send')
-// const text = document.getElementById('text')
+const sendInput = document.getElementById('send')
+const messageInput = document.getElementById('messageInput')
 // const conversations = document.getElementById('conversations')
 // const nicknameFile = document.getElementById('nickname')
 const search = document.getElementById('search')
@@ -27,14 +27,19 @@ async function connectTo (idConversation) {
   console.log({ conversation })
 }
 
-// send.addEventListener('click', () => {
-//   socket.emit('chat', {
-//     userId: socket.id,
-//     text: text.value,
-//     nickname: nicknameFile.value
-//   })
-//   text.value = ''
-// })
+async function sendMessage (idConversation) {
+  const text = String(messageInput.value)
+
+  const res = await fetch(`/conversation/${idConversation}/message`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ text })
+  })
+
+  const message = await res.json()
+  console.log({ message })
+}
 
 // socket.on('chat', ({ userId, text, nickname }) => {
 //   let username = 'you'

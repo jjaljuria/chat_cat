@@ -33,7 +33,14 @@ router.get('/conversation/:id', verifyExistUser, async (req, res) => {
 
 router.post('/conversation/:id/message', async (req, res) => {
   const { id } = req.params
-  req.send(id)
+  const { text } = req.body
+  try {
+    const newMessage = await conversationServices.createMessage({ idConversation: id, text })
+    return res.status(201).json(newMessage)
+  } catch (error) {
+    logger.error(error.message)
+    res.status(500)
+  }
 })
 
 export default router
