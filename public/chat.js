@@ -1,8 +1,9 @@
-// const socket = io()
+let socket = null
 
 const sendInput = document.getElementById('send')
 const search = document.getElementById('search')
 const listUsers = document.getElementById('listUsers')
+const messageBox = document.getElementById('messageBox')
 
 search.addEventListener('input', async (e) => {
   const textToFind = String(e.target.value)
@@ -25,12 +26,17 @@ function changeConversation () {
 async function connectTo (idConversation) {
   const res = await fetch(`/conversation/${idConversation}`)
   const conversation = await res.json()
-  const messageBox = document.getElementById('messageBox')
+
   const chat = document.getElementById('chat')
   chat.dataset.currentConversation = conversation.id
 
   clearMessages(messageBox)
   renderMessage({ messageBox, messages: conversation.messages })
+  socket = io({
+    auth: {
+      idConversation: conversation.id
+    }
+  })
 }
 
 function clearMessages (messageBox) {
@@ -52,15 +58,16 @@ async function sendMessage (idConversation) {
   const messageInput = document.getElementById('messageInput')
   const text = String(messageInput.value)
 
-  await fetch(`/conversation/${chat.dataset.currentConversation}/message`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ text })
-  })
-
+  socket.emit('message', text)
   messageInput.value = ''
+  socket.on('message', (message) => {
+    console.log({ message })
+    if (!message) {
+      messageBox.innerHTML += '<div>fail message</div>'
+    }
+
+    messageBox.innerHTML += `<div><small>${new Date(message.createdAt).toLocaleTimeString()}</small> : ${message.text}</div>`
+  })
 }
 
 // socket.on('chat', ({ userId, text, nickname }) => {
