@@ -1,9 +1,6 @@
-const socket = io()
+// const socket = io()
 
 const sendInput = document.getElementById('send')
-const messageInput = document.getElementById('messageInput')
-// const conversations = document.getElementById('conversations')
-// const nicknameFile = document.getElementById('nickname')
 const search = document.getElementById('search')
 const listUsers = document.getElementById('listUsers')
 
@@ -20,11 +17,32 @@ search.addEventListener('input', async (e) => {
   listUsers.innerHTML = usersHTML
 })
 
+function changeConversation () {
+
+}
+
 // eslint-disable-next-line no-unused-vars
 async function connectTo (idConversation) {
   const res = await fetch(`/conversation/${idConversation}`)
   const conversation = await res.json()
-  console.log({ conversation })
+  const messageBox = document.getElementById('messageBox')
+
+  clearMessages(messageBox)
+  renderMessage({ messageBox, messages: conversation.messages })
+}
+
+function clearMessages (messageBox) {
+  messageBox.innerHTML = ''
+}
+
+function renderMessage ({ messages, messageBox }) {
+  if (messages.length === 0) {
+    messageBox.innerHTML = '<div>You not have messages yet</div>'
+  }
+  console.log(messages)
+  messages.forEach(message => {
+    messageBox.innerHTML = `<div>${message.text}<small>${new Date(message.createdAt).toLocaleTimeString()}</small></div>`
+  })
 }
 
 async function sendMessage (idConversation) {

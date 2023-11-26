@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "cross-env DEGUB=true nodemon index.js",
+    "dev": "cross-env DEGUB=true nodemon --ignore public/chat.js index.js",
     "test": "cross-env DEBUG=true vitest"
   },
   "keywords": [],
