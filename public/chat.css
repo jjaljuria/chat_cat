@@ -1,3 +1,7 @@
+:root{
+	--size-message-vineta: 10px;
+}
+
 #conversations{
 	width: 100%;
 	height: 12rem;
@@ -19,4 +23,20 @@
 
 .height-chat{
 	height: 93vh;
+}
+
+.fit-content{
+	width:fit-content;
+}
+
+.message{
+
+}
+
+.message__vineta{
+	width: var(--size-message-vineta);
+	height: var(--size-message-vineta);
+	left: calc((var(--size-message-vineta) / 2) * -1) ;
+	transform: rotate(45deg);
+	background-color: inherit;
 }

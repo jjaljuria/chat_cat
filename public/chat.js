@@ -1,11 +1,8 @@
-const socket = io()
+let socket = null
 
-const sendInput = document.getElementById('send')
-const messageInput = document.getElementById('messageInput')
-// const conversations = document.getElementById('conversations')
-// const nicknameFile = document.getElementById('nickname')
 const search = document.getElementById('search')
 const listUsers = document.getElementById('listUsers')
+const messageBox = document.getElementById('messageBox')
 
 search.addEventListener('input', async (e) => {
   const textToFind = String(e.target.value)
@@ -24,30 +21,58 @@ search.addEventListener('input', async (e) => {
 async function connectTo (idConversation) {
   const res = await fetch(`/conversation/${idConversation}`)
   const conversation = await res.json()
-  console.log({ conversation })
-}
 
-async function sendMessage (idConversation) {
-  const text = String(messageInput.value)
-
-  const res = await fetch(`/conversation/${idConversation}/message`, {
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ text })
+  const chat = document.getElementById('chat')
+  chat.dataset.currentConversation = conversation.id
+  socket = io({
+    auth: {
+      idConversation: conversation.id
+    }
   })
 
-  const message = await res.json()
-  console.log({ message })
+  socket.on('message', (message) => {
+    if (!message) {
+      messageBox.innerHTML += '<div>fail message</div>'
+    }
+
+    messageBox.innerHTML += _styleMessage(message)
+
+    // bajar al fondo de la pantalla
+    messageBox.scrollTop = messageBox.scrollHeight
+  })
+
+  clearMessageBox(messageBox)
+  renderMessage({ messageBox, messages: conversation.messages })
 }
 
-// socket.on('chat', ({ userId, text, nickname }) => {
-//   let username = 'you'
-//   if (userId !== socket.id && nicknameFile.value !== nickname) {
-//     username = nickname
-//   }
+function clearMessageBox (messageBox) {
+  messageBox.innerHTML = ''
+}
 
-//   conversations.innerHTML = conversations.innerHTML + `<span class="d-block mb-1"><b>${username}</b>: ${text}</span>`
+function renderMessage ({ messages, messageBox }) {
+  if (messages.length === 0) {
+    messageBox.innerHTML = '<div>You not have messages yet</div>'
+  }
 
-//   conversations.scrollTop = conversations.scrollHeight
-// })
+  messages.forEach(message => {
+    messageBox.innerHTML += _styleMessage(message)
+  })
+}
+
+function _styleMessage (message) {
+  return `<div class="p-3 border bg-success rounded mb-3 mx-2 fit-content position-relative message"><div class="position-absolute message__vineta"></div><small>${new Date(message.createdAt).toLocaleTimeString()}</small> : ${message.text}</div>`
+}
+
+async function sendMessage () {
+  const messageInput = document.getElementById('messageInput')
+  const text = String(messageInput.value)
+
+  socket.emit('message', text)
+  messageInput.value = ''
+}
+
+function sendMessageOnPressEnter (e) {
+  if (e.key === 'Enter') {
+    sendMessage()
+  }
+}

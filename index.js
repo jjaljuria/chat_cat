@@ -17,6 +17,7 @@ import conversationRouter from './routers/conversation.routes.js'
 import morgan from 'morgan'
 import { engine } from 'express-handlebars'
 import logger from './lib/logger.js'
+import * as conversationServices from './services/conversation.js'
 
 const app = express()
 
@@ -68,9 +69,17 @@ server.listen(app.get('PORT'), () => {
 
 const io = new Server(server)
 io.on('connection', (socket) => {
-  logger.info({ socket })
-  socket.on('chat', (data) => {
-    io.sockets.emit('chat', data)
+  const { idConversation } = socket.handshake.auth
+  socket.join(idConversation)
+
+  socket.on('message', async (text) => {
+    try {
+      const newMessage = await conversationServices.createMessage({ idConversation, text })
+      io.to(idConversation).emit('message', newMessage)
+    } catch (error) {
+      logger.error(error.message)
+      io.to(idConversation).emit('message', null)
+    }
   })
 })
 

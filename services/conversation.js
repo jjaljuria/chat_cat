@@ -87,7 +87,11 @@ export const get = async (idConversation) => {
         id: idConversation
       },
       include: {
-        messages: true
+        messages: {
+          orderBy: {
+            createdAt: 'asc'
+          }
+        }
       }
     })
 
@@ -99,8 +103,8 @@ export const get = async (idConversation) => {
 }
 
 export const createMessage = async ({ idConversation, text }) => {
+  
   if (!idConversation || !text) throw new Error('less idConversation or text')
-
   try {
     return prisma.message.create({
       data: {
