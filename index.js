@@ -75,10 +75,10 @@ io.on('connection', (socket) => {
   socket.on('message', async (text) => {
     try {
       const newMessage = await conversationServices.createMessage({ idConversation, text })
-      socket.broadcast.to(idConversation).emit('message', newMessage)
+      io.to(idConversation).emit('message', newMessage)
     } catch (error) {
       logger.error(error.message)
-      socket.broadcast.to(idConversation).emit('message', null)
+      io.to(idConversation).emit('message', null)
     }
   })
 })

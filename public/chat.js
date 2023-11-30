@@ -1,6 +1,5 @@
 let socket = null
 
-const sendInput = document.getElementById('send')
 const search = document.getElementById('search')
 const listUsers = document.getElementById('listUsers')
 const messageBox = document.getElementById('messageBox')
@@ -18,10 +17,6 @@ search.addEventListener('input', async (e) => {
   listUsers.innerHTML = usersHTML
 })
 
-function changeConversation () {
-
-}
-
 // eslint-disable-next-line no-unused-vars
 async function connectTo (idConversation) {
   const res = await fetch(`/conversation/${idConversation}`)
@@ -29,17 +24,28 @@ async function connectTo (idConversation) {
 
   const chat = document.getElementById('chat')
   chat.dataset.currentConversation = conversation.id
-
-  clearMessages(messageBox)
-  renderMessage({ messageBox, messages: conversation.messages })
   socket = io({
     auth: {
       idConversation: conversation.id
     }
   })
+
+  socket.on('message', (message) => {
+    if (!message) {
+      messageBox.innerHTML += '<div>fail message</div>'
+    }
+
+    messageBox.innerHTML += _styleMessage(message)
+
+    // bajar al fondo de la pantalla
+    messageBox.scrollTop = messageBox.scrollHeight
+  })
+
+  clearMessageBox(messageBox)
+  renderMessage({ messageBox, messages: conversation.messages })
 }
 
-function clearMessages (messageBox) {
+function clearMessageBox (messageBox) {
   messageBox.innerHTML = ''
 }
 
@@ -47,36 +53,26 @@ function renderMessage ({ messages, messageBox }) {
   if (messages.length === 0) {
     messageBox.innerHTML = '<div>You not have messages yet</div>'
   }
-  console.log(messages)
+
   messages.forEach(message => {
-    messageBox.innerHTML += `<div><small>${new Date(message.createdAt).toLocaleTimeString()}</small> : ${message.text}</div>`
+    messageBox.innerHTML += _styleMessage(message)
   })
 }
 
-async function sendMessage (idConversation) {
-  const chat = document.getElementById('chat')
+function _styleMessage (message) {
+  return `<div class="p-3 border bg-success rounded mb-3 mx-2 fit-content position-relative message"><div class="position-absolute message__vineta"></div><small>${new Date(message.createdAt).toLocaleTimeString()}</small> : ${message.text}</div>`
+}
+
+async function sendMessage () {
   const messageInput = document.getElementById('messageInput')
   const text = String(messageInput.value)
 
   socket.emit('message', text)
   messageInput.value = ''
-  socket.on('message', (message) => {
-    console.log({ message })
-    if (!message) {
-      messageBox.innerHTML += '<div>fail message</div>'
-    }
-
-    messageBox.innerHTML += `<div><small>${new Date(message.createdAt).toLocaleTimeString()}</small> : ${message.text}</div>`
-  })
 }
 
-// socket.on('chat', ({ userId, text, nickname }) => {
-//   let username = 'you'
-//   if (userId !== socket.id && nicknameFile.value !== nickname) {
-//     username = nickname
-//   }
-
-//   conversations.innerHTML = conversations.innerHTML + `<span class="d-block mb-1"><b>${username}</b>: ${text}</span>`
-
-//   conversations.scrollTop = conversations.scrollHeight
-// })
+function sendMessageOnPressEnter (e) {
+  if (e.key === 'Enter') {
+    sendMessage()
+  }
+}
