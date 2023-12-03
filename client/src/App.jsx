@@ -5,8 +5,6 @@ import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import { getHome } from '../services/HomeServices';
 
-
-
 const routes = createBrowserRouter([
   {
     path: '/',

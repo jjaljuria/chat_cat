@@ -1,14 +1,28 @@
+import '../assets/chat.css'
 import { useLoaderData } from "react-router-dom"
+import Chat from '../components/Chat.jsx';
 
 export default function home() {
-const data = useLoaderData()
-console.log(data);
+  const {user, conversations} = useLoaderData()
+
+  const conversationsJSX =   conversations.map(conversation => {
+    return conversation.users.map(userOfTheConversation => {
+      if(userOfTheConversation.id !== user.id){
+        return (
+          <li key={userOfTheConversation.id} className="list-group-item list-group-item-action rounded-0" onClick="connectTo('{{conversation.id}}')">
+        {userOfTheConversation.nickname}
+          </li>
+      )
+
+      }
+    })
+  })
 
   return (
   <div className="container-fluid min-vh-100">
     <header className="row border align-items-center height-header" >
       <section className="cal-12 col-sm-4 col-md-4 border-end">
-        <h3 className="text-truncate">{user?.nickname}</h3>
+        <h3 className="text-truncate">{user.nickname}</h3>
       </section>
     </header>
 
@@ -30,19 +44,11 @@ console.log(data);
         </section>
 
         <ul className="list-group">
-        {/* {{#each conversations as |conversation|}}
-          {{#each conversation.users as |user|}}
-            {{#notEquals @root.user.id user.id}}
-              <li className="list-group-item list-group-item-action rounded-0" onclick="connectTo('{{conversation.id}}')">
-                {{user.nickname}}
-              </li>
-            {{/notEquals}}
-          {{/each}}
-        {{/each}} */}
+          { conversationsJSX }
         </ul>
       </aside>
 
-      {/* chat */}
+      <Chat />
     </div>
   </div>  
   )
