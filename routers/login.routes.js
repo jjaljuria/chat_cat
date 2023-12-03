@@ -18,18 +18,18 @@ router.post('/login', async (req, res) => {
       }
     })
 
-    if (!userFound) res.status(404).render('500.handlebars', { message: 'User not found' })
+    if (!userFound) res.status(406).json({ message: 'User not found' })
 
     const passwordMatched = await decrypt(password, userFound.password)
 
     if (!passwordMatched) {
-      return res.status(406).render('500.handlebars', { message: 'Password not matched' })
+      return res.status(406).json({ message: 'Password not matched' })
     }
 
     req.session.user = userFound.id
-    res.redirect('/')
+    res.status(202).end()
   } catch (error) {
-    res.render('500.handlebars', { message: error })
+    res.status(500).json({ message: error })
   }
 })
 

@@ -1,4 +1,9 @@
-export default function home({user, conversations}) {
+import { useLoaderData } from "react-router-dom"
+
+export default function home() {
+const data = useLoaderData()
+console.log(data);
+
   return (
   <div className="container-fluid min-vh-100">
     <header className="row border align-items-center height-header" >

@@ -1,8 +1,33 @@
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+
 export default function login() {
+  const navigate = useNavigate()
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  
+  const formHandler = async (e)=>{
+    e.preventDefault()
+
+    const response = await fetch('http://localhost:3000/login', {
+      method: 'POST',
+      headers:{
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({email, password})
+    })
+
+    if(response.ok){
+      navigate('/')
+    }
+
+    console.log(await response.json());
+  }
+
   return (
     <div className="container mt-4 text-center">
       <h1>Login</h1>
-      <form id="formLogin" method="post" action="/login" className="row">
+      <form id="formLogin" method="post" action="/login" onSubmit={formHandler} className="row">
         <div className="col-12 col-md-4 mx-auto rounded bg-light py-3 border border-1">
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
@@ -14,6 +39,7 @@ export default function login() {
               id="email"
               aria-describedby="emailfield"
               name="email"
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="mb-3">
@@ -26,6 +52,7 @@ export default function login() {
               id="password"
               aria-describedby="passwordfield"
               name="password"
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div className="">
@@ -35,7 +62,6 @@ export default function login() {
           </div>
         </div>
       </form>
-    </div>
-
+    </div>  
   )
 }
