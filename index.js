@@ -18,6 +18,7 @@ import morgan from 'morgan'
 import { engine } from 'express-handlebars'
 import logger from './lib/logger.js'
 import * as conversationServices from './services/conversation.js'
+import cors from 'cors'
 
 const app = express()
 
@@ -41,6 +42,7 @@ app.use('/js', express.static(path.join(__dirname, './node_modules/@popperjs/cor
 /** MIDDLEWARES */
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
+app.use(cors())
 app.use(expressSession({
   cookie: {
     maxAge: 7 * 24 * 60 * 60 * 1000

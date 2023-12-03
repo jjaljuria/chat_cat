@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "cross-env DEGUB=true nodemon --ignore public/chat.js index.js",
+    "dev": "cross-env DEGUB=true nodemon --ignore client index.js",
     "dev:client": "cd client && pnpm dev",
     "test": "cross-env DEBUG=true vitest"
   },
@@ -20,6 +20,7 @@
     "bcrypt": "5.1.1",
     "bootstrap": "^5.3.2",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "dotenv": "16.3.1",
     "express": "^4.18.2",
