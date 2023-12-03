@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { prisma } from '../database.js'
 import decrypt from '../lib/decrypt.js'
+import jwt from 'jsonwebtoken'
 
 const router = Router()
 
@@ -26,8 +27,8 @@ router.post('/login', async (req, res) => {
       return res.status(406).json({ message: 'Password not matched' })
     }
 
-    req.session.user = userFound.id
-    res.status(202).end()
+    const token = jwt.sign(userFound.id, 'secret')
+    res.status(202).json(token)
   } catch (error) {
     res.status(500).json({ message: error })
   }

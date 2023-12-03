@@ -42,13 +42,18 @@ app.use('/js', express.static(path.join(__dirname, './node_modules/@popperjs/cor
 /** MIDDLEWARES */
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+  methods: ['GET', 'POST'],
+  credentials: true,
+  origin: 'http://localhost:5173'
+}))
 app.use(expressSession({
   cookie: {
-    maxAge: 7 * 24 * 60 * 60 * 1000
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    sameSite: 'none'
   },
   secret: env.SESSION_SECRET,
-  resave: true,
+  resave: false,
   saveUninitialized: false,
   store: new PrismaSessionStore(prisma, {
     dbRecordIdIsSessionId: true

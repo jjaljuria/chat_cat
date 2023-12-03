@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import axios from 'axios';
 
 export default function login() {
   const navigate = useNavigate()
@@ -9,19 +10,12 @@ export default function login() {
   const formHandler = async (e)=>{
     e.preventDefault()
 
-    const response = await fetch('http://localhost:3000/login', {
-      method: 'POST',
-      headers:{
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({email, password})
-    })
+    axios.withCredentials = true
+    const response = await axios.post('http://localhost:3000/login', {email, password})
 
-    if(response.ok){
-      navigate('/')
-    }
+    console.log(response);
 
-    console.log(await response.json());
+    //navigate('/')
   }
 
   return (

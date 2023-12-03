@@ -1,7 +1,13 @@
+import jwt from 'jsonwebtoken'
+
 export default function (req, res, next) {
-  const user = req.session.user ?? null
+  const token = req.headers.authorization
 
-  if (!user) return res.status(401).end()
+  console.log({ token })
+  if (!token) return res.status(401).end()
 
+  const user = jwt.verify(token, 'secret')
+
+  req.session.user = user
   return next()
 }
