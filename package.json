@@ -7,6 +7,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "cross-env DEGUB=true nodemon --ignore public/chat.js index.js",
+    "dev:client": "cd client && pnpm dev",
     "test": "cross-env DEBUG=true vitest"
   },
   "keywords": [],
