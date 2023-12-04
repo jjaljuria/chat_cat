@@ -1,7 +1,12 @@
 import PropTypes from 'prop-types';
 import Message from './Message';
+import { useState, useRef, useEffect } from 'react';
+import { useSocket } from '../store/Socket.js'
 
 export default function Chat({messages}) {
+  const socket = useSocket((state) => state.socket)
+  const [newMessage, setNewMessage] = useState('');
+  const messageBox = useRef(null)
 
   let messagesJSX = null
   if(messages.length > 0){
@@ -9,6 +14,15 @@ export default function Chat({messages}) {
   }else{
     messagesJSX = <div>You not have messages yet</div>
   }
+
+  const sendMessageHandler = () =>{
+    socket.emit('message', newMessage)
+    setNewMessage('')
+  }
+
+  useEffect(()=> {
+    messageBox.current.scrollTop = messageBox.current.scrollHeight
+  }, [messages])
 
   return (
     <section
@@ -19,6 +33,7 @@ export default function Chat({messages}) {
     <div
         className="bg-body-secondary flex-grow-1 overflow-y-auto text-break"
         id="messageBox"
+        ref={messageBox}
     >
       { messagesJSX }
     </div>
@@ -26,7 +41,7 @@ export default function Chat({messages}) {
         <button
         className="btn btn-primary rounded-circle mx-1"
         id="send"
-       
+        onClick={sendMessageHandler}
         >
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +59,8 @@ export default function Chat({messages}) {
         name="message"
         id="messageInput"
         className="form-control w-100 shadow-none rounded rounded-5 mx-1"
-        
+        onChange={(e) => setNewMessage(e.target.value)}
+        value={newMessage}
         />
     </section>
     </section>

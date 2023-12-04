@@ -4,9 +4,14 @@ import { useState } from 'react'
 import Chat from '../components/Chat.jsx';
 import ListUser from '../components/ListUser';
 import { io } from 'socket.io-client'
+import { useSocket } from '../store/Socket.js'
 
 export default function home() {
   const {user, conversations} = useLoaderData()
+
+  const setSocket = useSocket((state) => state.setSocket)
+  const socket = useSocket((state) => state.socket)
+
   const [searchList, setSearchList] = useState([]);
   const [messages, setMessages] = useState([]);
 
@@ -29,7 +34,7 @@ export default function home() {
     setSearchList(await response.json())
   }
 
-  let socket = null
+  
   async function connectTo (idConversation) {
     const authorization = localStorage.getItem('authorization')
     const res = await fetch(`http://localhost:3000/conversation/${idConversation}`, {
@@ -47,18 +52,15 @@ export default function home() {
     })
 
     socket.on('message', messageHandler)
+    setSocket(socket)
   }
 
   const messageHandler = (message) => {
-    console.log(message);
-    // if (!message) {
-    //   messageBox.innerHTML += '<div>fail message</div>'
-    // }
-  
-    // messageBox.innerHTML += _styleMessage(message)
-  
-    // // bajar al fondo de la pantalla
-    // messageBox.scrollTop = messageBox.scrollHeight
+
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      message
+    ])
   }
   const conversationsJSX =   conversations.map(conversation => {
     return conversation.users.map(userOfTheConversation => {
