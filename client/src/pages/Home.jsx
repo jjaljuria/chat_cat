@@ -1,9 +1,31 @@
 import '../assets/chat.css'
 import { useLoaderData } from "react-router-dom"
+import { useState } from 'react'
 import Chat from '../components/Chat.jsx';
+import ListUser from '../components/ListUser';
 
 export default function home() {
   const {user, conversations} = useLoaderData()
+  const [searchList, setSearchList] = useState([]);
+
+  const searchHandler = async (e) =>{
+    const textToFind = String(e.target.value)
+    const authorization = localStorage.getItem('authorization')
+
+    if(!textToFind){
+      setSearchList([])
+      return
+    }
+
+    const response = await fetch(`http://localhost:3000/user?find=${textToFind}`,{
+      method: 'GET',
+      headers: {
+        'authorization': authorization
+      }
+    })
+
+    setSearchList(await response.json())
+  }
 
   const conversationsJSX =   conversations.map(conversation => {
     return conversation.users.map(userOfTheConversation => {
@@ -37,13 +59,13 @@ export default function home() {
               </svg>
             </span>
             </div>
-            <input type="search" className="form-control shadow-none border border-start-0 ps-0 rounded-end" placeholder="Username" aria-label="Username" aria-describedby="search" id="search" autoComplete="off" />
+            <input type="search" className="form-control shadow-none border border-start-0 ps-0 rounded-end" placeholder="Username" aria-label="Username" aria-describedby="search" id="search" autoComplete="off" onInput={searchHandler} />
           
-          <ul id="listUsers" className="list-group position-absolute top-100 rounded"></ul>
+          <ListUser userList={searchList} />
           </form>
         </section>
 
-        <ul className="list-group">
+        <ul className="list-group position-relative">
           { conversationsJSX }
         </ul>
       </aside>

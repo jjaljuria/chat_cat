@@ -9,7 +9,6 @@ export default function Chat() {
         className="bg-body-secondary flex-grow-1 overflow-y-auto text-break"
         id="messageBox"
     >
-        {" "}
     </div>
     <section className="d-flex py-1 border">
         <button
@@ -33,7 +32,7 @@ export default function Chat() {
         name="message"
         id="messageInput"
         className="form-control w-100 shadow-none rounded rounded-5 mx-1"
-        onKeyDown="sendMessageOnPressEnter(event)"
+        
         />
     </section>
     </section>
