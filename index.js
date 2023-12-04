@@ -74,8 +74,15 @@ server.listen(app.get('PORT'), () => {
   logger.info('Server start in PORT ' + app.get('PORT'))
 })
 
-const io = new Server(server)
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST']
+  }
+})
+
 io.on('connection', (socket) => {
+  console.log(socket.id)
   const { idConversation } = socket.handshake.auth
   socket.join(idConversation)
 

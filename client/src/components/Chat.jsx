@@ -1,4 +1,15 @@
-export default function Chat() {
+import PropTypes from 'prop-types';
+import Message from './Message';
+
+export default function Chat({messages}) {
+
+  let messagesJSX = null
+  if(messages.length > 0){
+    messagesJSX = messages.map(message => <Message message={message} key={message.id}/>)
+  }else{
+    messagesJSX = <div>You not have messages yet</div>
+  }
+
   return (
     <section
     className="col-12 col-sm-8 border d-none d-sm-flex flex-column h-100 justify-content-between p-0"
@@ -9,12 +20,13 @@ export default function Chat() {
         className="bg-body-secondary flex-grow-1 overflow-y-auto text-break"
         id="messageBox"
     >
+      { messagesJSX }
     </div>
     <section className="d-flex py-1 border">
         <button
         className="btn btn-primary rounded-circle mx-1"
         id="send"
-        onClick="sendMessage()"
+       
         >
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -37,4 +49,8 @@ export default function Chat() {
     </section>
     </section>
   )
+}
+
+Chat.propTypes = {
+  messages: PropTypes.array
 }

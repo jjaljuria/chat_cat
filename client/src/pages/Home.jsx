@@ -3,10 +3,12 @@ import { useLoaderData } from "react-router-dom"
 import { useState } from 'react'
 import Chat from '../components/Chat.jsx';
 import ListUser from '../components/ListUser';
+import { io } from 'socket.io-client'
 
 export default function home() {
   const {user, conversations} = useLoaderData()
   const [searchList, setSearchList] = useState([]);
+  const [messages, setMessages] = useState([]);
 
   const searchHandler = async (e) =>{
     const textToFind = String(e.target.value)
@@ -27,11 +29,42 @@ export default function home() {
     setSearchList(await response.json())
   }
 
+  let socket = null
+  async function connectTo (idConversation) {
+    const authorization = localStorage.getItem('authorization')
+    const res = await fetch(`http://localhost:3000/conversation/${idConversation}`, {
+      headers: {
+      'authorization': authorization
+      }
+    })
+  
+    const conversation = await res.json()
+    setMessages(conversation.messages)
+    const socket = io('http://localhost:3000',{
+      auth: {
+        idConversation: conversation.id
+      }
+    })
+
+    socket.on('message', messageHandler)
+  }
+
+  const messageHandler = (message) => {
+    console.log(message);
+    // if (!message) {
+    //   messageBox.innerHTML += '<div>fail message</div>'
+    // }
+  
+    // messageBox.innerHTML += _styleMessage(message)
+  
+    // // bajar al fondo de la pantalla
+    // messageBox.scrollTop = messageBox.scrollHeight
+  }
   const conversationsJSX =   conversations.map(conversation => {
     return conversation.users.map(userOfTheConversation => {
       if(userOfTheConversation.id !== user.id){
         return (
-          <li key={userOfTheConversation.id} className="list-group-item list-group-item-action rounded-0" onClick="connectTo('{{conversation.id}}')">
+          <li key={userOfTheConversation.id} className="list-group-item list-group-item-action rounded-0" onClick={()=> connectTo(conversation.id)}>
         {userOfTheConversation.nickname}
           </li>
       )
@@ -70,7 +103,7 @@ export default function home() {
         </ul>
       </aside>
 
-      <Chat />
+      <Chat messages={messages}/>
     </div>
   </div>  
   )
