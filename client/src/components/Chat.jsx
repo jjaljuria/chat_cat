@@ -2,15 +2,17 @@ import PropTypes from 'prop-types';
 import Message from './Message';
 import { useState, useRef, useEffect } from 'react';
 import { useSocket } from '../store/Socket.js'
+import { useConversations } from "../store/ConversationStore";
 
-export default function Chat({messages}) {
+export default function Chat() {
   const socket = useSocket((state) => state.socket)
+  const currentConversation = useConversations(state => state.currentConversation)
   const [newMessage, setNewMessage] = useState('');
   const messageBox = useRef(null)
 
   let messagesJSX = null
-  if(messages.length > 0){
-    messagesJSX = messages.map(message => <Message message={message} key={message.id}/>)
+  if(currentConversation?.messages?.length > 0){
+    messagesJSX = currentConversation.messages.map(message => <Message message={message} key={message.id}/>)
   }else{
     messagesJSX = <div>You not have messages yet</div>
   }
@@ -20,9 +22,10 @@ export default function Chat({messages}) {
     setNewMessage('')
   }
 
-  useEffect(()=> {
-    messageBox.current.scrollTop = messageBox.current.scrollHeight
-  }, [messages])
+  // TODO
+  // useEffect(()=> {
+  //   messageBox.current.scrollTop = messageBox.current.scrollHeight
+  // }, [messages])
 
   return (
     <section

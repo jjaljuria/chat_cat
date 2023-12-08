@@ -4,20 +4,17 @@ import { useState } from 'react'
 import Chat from '../components/Chat.jsx';
 import ListUser from '../components/ListUser';
 import ConversationList from '../components/ConversationList';
-import { io } from 'socket.io-client'
-import { useSocket } from '../store/Socket.js'
+
 import { useConversations } from '../store/ConversationStore.js';
+
 
 export default function home() {
   const {user, conversations} = useLoaderData()
+  
 
   const setConversations = useConversations(state => state.setConversations)
 
-  const setSocket = useSocket((state) => state.setSocket)
-  const socket = useSocket((state) => state.socket)
-
   const [searchList, setSearchList] = useState([]);
-  const [messages, setMessages] = useState([]);
 
   setConversations(conversations)
 
@@ -39,36 +36,6 @@ export default function home() {
 
     setSearchList(await response.json())
   }
-
-  
-  async function connectTo (idConversation) {
-    const authorization = localStorage.getItem('authorization')
-    const res = await fetch(`http://localhost:3000/conversation/${idConversation}`, {
-      headers: {
-      'authorization': authorization
-      }
-    })
-  
-    const conversation = await res.json()
-    setMessages(conversation.messages)
-    const socket = io('http://localhost:3000',{
-      auth: {
-        idConversation: conversation.id
-      }
-    })
-
-    socket.on('message', messageHandler)
-    setSocket(socket)
-  }
-
-  const messageHandler = (message) => {
-
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      message
-    ])
-  }
-
 
   return (
   <div className="container-fluid min-vh-100">
@@ -97,7 +64,7 @@ export default function home() {
         <ConversationList/>
       </aside>
 
-      <Chat messages={messages}/>
+      <Chat/>
     </div>
   </div>  
   )
