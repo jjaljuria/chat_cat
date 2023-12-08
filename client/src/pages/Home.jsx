@@ -3,17 +3,23 @@ import { useLoaderData } from "react-router-dom"
 import { useState } from 'react'
 import Chat from '../components/Chat.jsx';
 import ListUser from '../components/ListUser';
+import ConversationList from '../components/ConversationList';
 import { io } from 'socket.io-client'
 import { useSocket } from '../store/Socket.js'
+import { useConversations } from '../store/ConversationStore.js';
 
 export default function home() {
   const {user, conversations} = useLoaderData()
+
+  const setConversations = useConversations(state => state.setConversations)
 
   const setSocket = useSocket((state) => state.setSocket)
   const socket = useSocket((state) => state.socket)
 
   const [searchList, setSearchList] = useState([]);
   const [messages, setMessages] = useState([]);
+
+  setConversations(conversations)
 
   const searchHandler = async (e) =>{
     const textToFind = String(e.target.value)
@@ -62,18 +68,7 @@ export default function home() {
       message
     ])
   }
-  const conversationsJSX =   conversations.map(conversation => {
-    return conversation.users.map(userOfTheConversation => {
-      if(userOfTheConversation.id !== user.id){
-        return (
-          <li key={userOfTheConversation.id} className="list-group-item list-group-item-action rounded-0" onClick={()=> connectTo(conversation.id)}>
-        {userOfTheConversation.nickname}
-          </li>
-      )
 
-      }
-    })
-  })
 
   return (
   <div className="container-fluid min-vh-100">
@@ -99,10 +94,7 @@ export default function home() {
           <ListUser userList={searchList} />
           </form>
         </section>
-
-        <ul className="list-group position-relative">
-          { conversationsJSX }
-        </ul>
+        <ConversationList/>
       </aside>
 
       <Chat messages={messages}/>
