@@ -4,16 +4,12 @@ import { useState } from 'react'
 import Chat from '../components/Chat.jsx';
 import ListUser from '../components/ListUser';
 import ConversationList from '../components/ConversationList';
-
 import { useConversations } from '../store/ConversationStore.js';
 
 
 export default function home() {
   const {user, conversations} = useLoaderData()
-  
-
   const setConversations = useConversations(state => state.setConversations)
-
   const [searchList, setSearchList] = useState([]);
 
   setConversations(conversations)

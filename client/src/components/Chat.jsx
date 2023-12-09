@@ -1,45 +1,41 @@
 import PropTypes from 'prop-types';
-import Message from './Message';
-import { useState, useRef, useEffect } from 'react';
+import MessageBox from './MessageBox.jsx';
+import { useState, useEffect } from 'react';
 import { useSocket } from '../store/Socket.js'
 import { useConversations } from "../store/ConversationStore";
 
+function useMessages(){
+  const currentConversation = useConversations(state => state.currentConversation)
+  const [messages, setMessages] = useState([]);
+  useEffect(()=>{
+    if(currentConversation) setMessages(currentConversation.messages)
+  },[currentConversation])
+
+  return [messages, setMessages]
+}
+
 export default function Chat() {
   const socket = useSocket((state) => state.socket)
-  const currentConversation = useConversations(state => state.currentConversation)
   const [newMessage, setNewMessage] = useState('');
-  const messageBox = useRef(null)
-
-  let messagesJSX = null
-  if(currentConversation?.messages?.length > 0){
-    messagesJSX = currentConversation.messages.map(message => <Message message={message} key={message.id}/>)
-  }else{
-    messagesJSX = <div>You not have messages yet</div>
-  }
+  const [messages, setMessages] = useMessages()
 
   const sendMessageHandler = () =>{
     socket.emit('message', newMessage)
     setNewMessage('')
   }
 
-  // TODO
-  // useEffect(()=> {
-  //   messageBox.current.scrollTop = messageBox.current.scrollHeight
-  // }, [messages])
-
+  const messageHandler = (message) => {
+    setMessages([...messages, message])
+  }
+  
+  if(socket) socket.connect().on('message', messageHandler)
   return (
     <section
     className="col-12 col-sm-8 border d-none d-sm-flex flex-column h-100 justify-content-between p-0"
-    data-currentconversation=""
     id="chat"
     >
-    <div
-        className="bg-body-secondary flex-grow-1 overflow-y-auto text-break"
-        id="messageBox"
-        ref={messageBox}
-    >
-      { messagesJSX }
-    </div>
+
+    <MessageBox messages={messages} />
     <section className="d-flex py-1 border">
         <button
         className="btn btn-primary rounded-circle mx-1"
@@ -64,6 +60,9 @@ export default function Chat() {
         className="form-control w-100 shadow-none rounded rounded-5 mx-1"
         onChange={(e) => setNewMessage(e.target.value)}
         value={newMessage}
+        onKeyDown={(e) => {
+          if(e.key === 'Enter') sendMessageHandler()
+        }}
         />
     </section>
     </section>
