@@ -10,14 +10,8 @@ export default function login() {
   const formHandler = async (e)=>{
     e.preventDefault()
 
-    const token = await LoginServices({email, password})
-  
-    if(!token){
-      return
-    }
+    await LoginServices({email, password})
     
-    localStorage.setItem('authorization', token)
-    navigate('/')
   }
 
   return (

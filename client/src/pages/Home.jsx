@@ -16,7 +16,6 @@ export default function home() {
 
   const searchHandler = async (e) =>{
     const textToFind = String(e.target.value)
-    const authorization = localStorage.getItem('authorization')
 
     if(!textToFind){
       setSearchList([])
@@ -24,10 +23,7 @@ export default function home() {
     }
 
     const response = await fetch(`http://localhost:3000/user?find=${textToFind}`,{
-      method: 'GET',
-      headers: {
-        'authorization': authorization
-      }
+      credentials: 'include'
     })
 
     setSearchList(await response.json())
