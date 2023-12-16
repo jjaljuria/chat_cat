@@ -14,10 +14,6 @@ vi.mock('../middlewares/verifyExistUser.js', () => {
 })
 
 describe('create user', () => {
-  test('return 200 status code GET /register', async () => {
-    await request(app).get('/register').expect(200)
-  })
-
   test('should register a user', async () => {
     const mockUser = {
       nickname: 'superjj',

@@ -4,10 +4,6 @@ import decrypt from '../lib/decrypt.js'
 
 const router = Router()
 
-router.get('/login', (req, res) => {
-  res.render('login.handlebars')
-})
-
 router.post('/login', async (req, res) => {
   const { email, password } = req.body
 
@@ -18,7 +14,7 @@ router.post('/login', async (req, res) => {
       }
     })
 
-    if (!userFound) res.status(406).json({ message: 'User not found' })
+    if (!userFound) return res.status(406).json({ message: 'User not found' })
 
     const passwordMatched = await decrypt(password, userFound.password)
 
@@ -26,11 +22,11 @@ router.post('/login', async (req, res) => {
       return res.status(406).json({ message: 'Password not matched' })
     }
 
-    req.session.idUser = userFound.id
+    // req.session.idUser = userFound.id
 
-    res.status(202).end()
+    return res.status(202).end()
   } catch (error) {
-    res.status(500).json({ message: error })
+    return res.status(500).json({ message: error })
   }
 })
 

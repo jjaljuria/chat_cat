@@ -3,7 +3,6 @@ import { Server } from 'socket.io'
 import path from 'path'
 import { fileURLToPath } from 'node:url'
 import { createServer } from 'node:http'
-import helpers from './views/helpers/helpers.js'
 import cookieParser from 'cookie-parser'
 import expressSession from 'express-session'
 import { PrismaSessionStore } from '@quixo3/prisma-session-store'
@@ -15,7 +14,6 @@ import logoutRouter from './routers/logout.routes.js'
 import homeRouter from './routers/home.routes.js'
 import conversationRouter from './routers/conversation.routes.js'
 import morgan from 'morgan'
-import { engine } from 'express-handlebars'
 import logger from './lib/logger.js'
 import * as conversationServices from './services/conversation.js'
 import cors from 'cors'
@@ -24,12 +22,6 @@ const app = express()
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-
-app.engine('handlebars', engine({
-  helpers
-}))
-app.set('view engine', 'handlebars')
-app.set('views', './views')
 
 app.set('PORT', process.env.PORT || 3000)
 

@@ -6,17 +6,13 @@ import verifyExistUser from '../middlewares/verifyExistUser.js'
 
 const router = Router()
 
-router.get('/register', async (req, res) => {
-  res.render('register.handlebars')
-})
-
 router.post('/user', async (req, res) => {
   try {
     await prisma.user.create({ data: { ...req.body, password: await encrypt(req.body.password) } })
     res.status(202).send()
   } catch (error) {
     logger.error(error.message)
-    res.status(500).render('500.handlebars', { message: 'Error with create user' })
+    res.status(500).json({ message: 'Error with create user' })
   }
 })
 

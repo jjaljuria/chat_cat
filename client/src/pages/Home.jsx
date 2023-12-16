@@ -5,6 +5,7 @@ import Chat from '../components/Chat.jsx';
 import ListUser from '../components/ListUser';
 import ConversationList from '../components/ConversationList';
 import { useConversations } from '../store/ConversationStore.js';
+import Logout from '../components/Logout';
 
 
 export default function home() {
@@ -34,6 +35,9 @@ export default function home() {
     <header className="row border align-items-center height-header" >
       <section className="cal-12 col-sm-4 col-md-4 border-end">
         <h3 className="text-truncate">{user.nickname}</h3>
+      </section>
+      <section className="col-sm-4">
+        <Logout />
       </section>
     </header>
 

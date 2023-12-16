@@ -10,21 +10,17 @@ vi.mock('../lib/decrypt.js', () => {
 })
 
 describe('Login User', () => {
-  test('should show login page', async () => {
-    await request(app).get('/login').send().expect(200)
-  })
-
   test('should send user and password validates and redirect to /', async () => {
     const user = {
       email: 'jose@email.com',
       password: '12345'
     }
 
-    prisma.user.findUnique = vi.fn().mockReturnValueOnce(Promise.resolve(user))
+    prisma.user.findUnique.mockReturnValueOnce(Promise.resolve(user))
     decrypt.mockReturnValueOnce(Promise.resolve(true))
 
     await request(app).post('/login').send(user)
-      .expect('Location', '/')
+      .expect(202)
   })
 
   test('should show message with user not found', async () => {
@@ -34,9 +30,9 @@ describe('Login User', () => {
     }
     const userNotFoundMessage = /User\snot\sfound/i
 
-    prisma.user.findUnique = vi.fn().mockReturnValueOnce(Promise.resolve(null))
+    prisma.user.findUnique.mockReturnValueOnce(Promise.resolve(null))
 
-    await request(app).post('/login').send(user).expect(404).expect(userNotFoundMessage)
+    await request(app).post('/login').send(user).expect(406).expect(userNotFoundMessage)
   })
 
   test('should show message with password not match', async () => {
@@ -46,7 +42,7 @@ describe('Login User', () => {
     }
     const passwordNotMatchedMessage = /Password\snot\smatched/i
 
-    prisma.user.findUnique = vi.fn().mockReturnValueOnce(Promise.resolve(user))
+    prisma.user.findUnique.mockReturnValueOnce(Promise.resolve(user))
     decrypt.mockReturnValueOnce(Promise.resolve(false))
 
     await request(app).post('/login').send(user).expect(406).expect(passwordNotMatchedMessage)
