@@ -22,7 +22,7 @@ router.post('/login', async (req, res) => {
       return res.status(406).json({ message: 'Password not matched' })
     }
 
-    // req.session.idUser = userFound.id
+    req.session.idUser = userFound.id
 
     return res.status(202).end()
   } catch (error) {

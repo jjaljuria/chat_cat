@@ -4,11 +4,12 @@ import * as ConversationServices from '../services/ConversationServices.js';
 import { io } from 'socket.io-client'
 import { useSocket } from '../store/Socket.js'
 
-function connectToSocket(idConversation){
+function connectToSocket({idConversation, idUser}){
 
     const socket = io('http://localhost:3000',{
       auth: {
-          idConversation: idConversation
+          idConversation,
+          idUser
       },
       autoConnect: false
     })
@@ -26,7 +27,7 @@ export default function ConversationList() {
         const conversation = await ConversationServices.find(idConversation)
         
         setCurrentConversation(conversation)
-        setSocket(connectToSocket(conversation.id))
+        setSocket(connectToSocket({idConversation: conversation.id, idUser: user.id}))
     }
 
 

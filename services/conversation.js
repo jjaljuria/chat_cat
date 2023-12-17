@@ -102,8 +102,7 @@ export const get = async (idConversation) => {
   }
 }
 
-export const createMessage = async ({ idConversation, text }) => {
-  
+export const createMessage = async ({ idConversation, text, idUser }) => {
   if (!idConversation || !text) throw new Error('less idConversation or text')
   try {
     return prisma.message.create({
@@ -112,6 +111,11 @@ export const createMessage = async ({ idConversation, text }) => {
         conversation: {
           connect: {
             id: idConversation
+          }
+        },
+        user: {
+          connect: {
+            id: idUser
           }
         }
       }

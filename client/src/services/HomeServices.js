@@ -7,9 +7,9 @@ export async function getHome(){
         credentials: 'include'
     })
 
-    if(response.status === 401){
-        throw new Response('Unauthorized', {status: 401})
+    if(response.ok){
+        return await response.json()
     }
 
-    return await response.json()
+    throw new Response(await response.text())
 }

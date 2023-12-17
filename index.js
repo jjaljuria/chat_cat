@@ -74,12 +74,12 @@ const io = new Server(server, {
 
 io.on('connection', (socket) => {
   console.log(socket.id)
-  const { idConversation } = socket.handshake.auth
+  const { idConversation, idUser } = socket.handshake.auth
   socket.join(idConversation)
 
   socket.on('message', async (text) => {
     try {
-      const newMessage = await conversationServices.createMessage({ idConversation, text })
+      const newMessage = await conversationServices.createMessage({ idConversation, text, idUser })
       io.to(idConversation).emit('message', newMessage)
     } catch (error) {
       logger.error(error.message)

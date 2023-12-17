@@ -41,6 +41,11 @@
 	background-color: inherit;
 }
 
+.message__vineta--right{
+	left:initial;
+	right: calc((var(--size-message-vineta) / 2) * -1) ;
+}
+
 .text-tiny {
 	font-size: 0.5rem;
 }

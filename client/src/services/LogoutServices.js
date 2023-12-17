@@ -3,7 +3,7 @@ const basename = 'http://localhost:3000'
 
 export async function lock() {
     try{
-        const response = await axios.post(basename + '/logout', {
+        const response = await axios.post(basename + '/logout', null, {
             withCredentials: true
         })
 

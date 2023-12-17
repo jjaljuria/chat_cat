@@ -23,6 +23,7 @@ model  User{
   email String @unique
   password String
   conversations Conversation[]
+  messages Message[]
 }
 
 model Conversation{
@@ -49,6 +50,8 @@ model Message{
   text String
   idConversation String
   conversation Conversation @relation(fields: [idConversation], references: [id])
+  idUser String
+  user User @relation(fields: [idUser], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -10,7 +10,11 @@ export default function login() {
   const formHandler = async (e)=>{
     e.preventDefault()
 
-    await LoginServices({email, password})
+    const status = await LoginServices({email, password})
+
+    if(status === 202){
+      navigate('/')
+    }
     
   }
 
