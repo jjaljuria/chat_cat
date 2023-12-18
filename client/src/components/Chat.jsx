@@ -7,6 +7,7 @@ import { useConversations } from "../store/ConversationStore";
 function useMessages(){
   const currentConversation = useConversations(state => state.currentConversation)
   const [messages, setMessages] = useState([]);
+
   useEffect(()=>{
     if(currentConversation) setMessages(currentConversation.messages)
   },[currentConversation])

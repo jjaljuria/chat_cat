@@ -62,7 +62,7 @@ describe('create user', () => {
     ]
 
     verifyExistUser.mockImplementationOnce((req, res, next) => {
-      req.session.user = myId
+      req.session.idUser = myId
       next()
     })
     prisma.user.findMany.mockReturnValueOnce(Promise.resolve(users))

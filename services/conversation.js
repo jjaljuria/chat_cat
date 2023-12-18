@@ -71,7 +71,8 @@ export const hasConversationWith = async (myId, otherId) => {
             id: true,
             nickname: true
           }
-        }
+        },
+        messages: true
       }
     })
     return result

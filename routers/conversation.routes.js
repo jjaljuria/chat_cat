@@ -5,7 +5,7 @@ import verifyExistUser from '../middlewares/verifyExistUser.js'
 const router = Router()
 
 router.post('/conversation', async (req, res) => {
-  const myId = req.session.user
+  const myId = req.session.idUser
   const { id: otherId } = req.body
 
   try {

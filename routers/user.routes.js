@@ -18,7 +18,7 @@ router.post('/user', async (req, res) => {
 
 router.get('/user', verifyExistUser, async (req, res) => {
   const { find } = req.query
-  const { user: userId } = req.session
+  const { idUser } = req.session
 
   try {
     const usersFound = await prisma.user.findMany({
@@ -33,7 +33,7 @@ router.get('/user', verifyExistUser, async (req, res) => {
       }
     })
 
-    return res.json(usersFound.filter(user => user.id !== userId))
+    return res.json(usersFound.filter(user => user.id !== idUser))
   } catch (error) {
     logger.error(error)
   }
