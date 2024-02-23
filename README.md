@@ -15,6 +15,12 @@ Instalar dependencias
 npm install o pnpm install
 ```
 ejecute `npm start` e ingrese a `http://localhost:3000` en su navegador
+
+> Importante:  
+> se necesita una base de datos mysql o mariadb y una url en la variable DATABASE_URL en el arhivo .env ejemplo: 
+> 
+> "mysql://root:@localhost:3306/chat_cat"
+
 ## Comandos
 ```
 /* ejecuta el servidor */ 
@@ -27,7 +33,7 @@ npm run dev o pnpm dev
 ## Variables de entorno
 crea un archivo .env o agrega las variables en el package.json
 
-* DATABASE_URL: la dirección de la base de datos, si no se específica, hace referencia al localhost
+* DATABASE_URL: la dirección url de la base de datos
 
 * SESSION_SECRET: palabra que se usa para cifrar las sesiones, por defecto tiene el valor "secret"
 
