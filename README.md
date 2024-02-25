@@ -15,8 +15,18 @@ git clone https://github.com/jjaljuria/chat_cat.git
 ```
 Instalar dependencias
 ```
-npm install o pnpm install
+npm install 
+o
+pnpm install
 ```
+
+Construir
+```
+npm run build
+o
+pnpm build
+```
+
 ejecute `npm start` e ingrese a `http://localhost:3000` en su navegador
 
 
