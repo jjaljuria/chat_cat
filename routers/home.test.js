@@ -14,6 +14,6 @@ vi.mock('../services/user.js', () => {
 describe('Home Page', () => {
   test('should return status code 200', async () => {
     get.mockReturnValueOnce({ id: 1 })
-    await request(app).get('/').send().expect(200)
+    await request(app).get('/home').send().expect(200)
   })
 })

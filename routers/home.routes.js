@@ -5,7 +5,7 @@ import * as userServices from '../services/user.js'
 
 const router = Router()
 
-router.get('/', verifyExistUser, async (req, res) => {
+router.get('/home', verifyExistUser, async (req, res) => {
   const user = await userServices.get(req.session.idUser)
   const conversations = await conversationServices.getAllOf(user.id)
   res.json({ conversations, user })
