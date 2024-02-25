@@ -4,7 +4,10 @@ Un simple chat web
 
 ## Instalación
 
-Ejecute el siguientes comando:
+> Importante:  
+> se necesita una base de datos mysql o mariadb y una url en la variable DATABASE_URL en el arhivo .env ejemplo: 
+> 
+> "mysql://root:@localhost:3306/chat_cat"
 
 Clonar el repositorio
 ```
@@ -16,10 +19,6 @@ npm install o pnpm install
 ```
 ejecute `npm start` e ingrese a `http://localhost:3000` en su navegador
 
-> Importante:  
-> se necesita una base de datos mysql o mariadb y una url en la variable DATABASE_URL en el arhivo .env ejemplo: 
-> 
-> "mysql://root:@localhost:3306/chat_cat"
 
 ## Comandos
 ```
