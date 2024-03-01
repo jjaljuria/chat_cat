@@ -60,6 +60,10 @@ app.use(logoutRouter)
 app.use(homeRouter)
 app.use(conversationRouter)
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'))
+})
+
 const server = createServer(app)
 server.listen(app.get('PORT'), () => {
   logger.info('Server start in PORT ' + app.get('PORT'))
